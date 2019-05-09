@@ -11,10 +11,6 @@ import {
 
 import Svg, { G, Path } from 'react-native-svg'
 
-import { LinearGradient } from 'expo'
-
-import Actions from '../redux/actions'
-
 import GlobalStyles from '../resources/styles'
 
 class Credits extends React.Component {
@@ -32,8 +28,8 @@ class Credits extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.flex}>
-        <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded }}>
+      <View style={{ ...GlobalStyles.flex, paddingTop: 5 }}>
+        <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded, paddingBottom: 18 }}>
           <Text style={GlobalStyles.h1}>Legal Information</Text>
         </View>
         <ScrollView style={{ ...GlobalStyles.padded, ...styles.content }}>
@@ -126,7 +122,7 @@ class Credits extends React.Component {
               </View>
             </View>
 
-            <View style={{ ...GlobalStyles.row, ...styles.iconRow }}>
+            <View style={{ ...GlobalStyles.row, ...styles.iconRow, marginBottom: 0 }}>
               <View style={styles.icon}>
                 <Svg height={20} width={30} viewBox="0 0 451.847 451.847">
                   <G>
@@ -151,6 +147,14 @@ class Credits extends React.Component {
               <Text style={styles.library} onPress={() => this.onClickLink('https://github.com/archriss/react-native-snap-carousel')}>react-native-snap-carousel</Text>
             </View>
           </View>
+
+          <View style={styles.section}>
+            <View>
+              <Text style={styles.sectionTitle}>Source</Text>
+              <Text style={{ ...GlobalStyles.caption, ...styles.sectionCaption }}>Feel free to fork, modify, criticize (constructively), or improve upon. Just keep it free.</Text>
+              <Text style={styles.library} onPress={() => this.onClickLink('https://github.com/ehainer/dime-game')}>View on GitHub</Text>
+            </View>
+          </View>
         </ScrollView>
       </View>)
   }
@@ -162,6 +166,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(0, 0, 0, 0.1)'
   },
   iconRow: {
+    marginTop: 5,
     marginBottom: 15,
     alignItems: 'center'
   },

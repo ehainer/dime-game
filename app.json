@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Dime Game",
+    "name": "The Dime Game",
     "slug": "dime",
     "privacy": "unlisted",
     "sdkVersion": "32.0.0",
@@ -13,7 +13,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#323a45"
     },
     "updates": {
@@ -23,10 +23,12 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.minow.dbt.dime",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.minow.dbt.dime"
+      "package": "com.minow.dbt.dime",
+      "permissions": []
     }
   }
 }

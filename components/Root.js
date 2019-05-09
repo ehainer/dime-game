@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LinearGradient, Font } from 'expo'
+import { LinearGradient, Font, SplashScreen } from 'expo'
 
 import {
   View,
@@ -9,7 +9,8 @@ import {
   Animated,
   StatusBar,
   BackHandler,
-  AsyncStorage
+  AsyncStorage,
+  Easing
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -31,7 +32,10 @@ class Root extends React.Component {
   constructor(props) {
     super(props)
 
+    SplashScreen.preventAutoHide()
+    
     this.topSpace = StatusBar.currentHeight
+    this.opacityContainer = new Animated.Value(0)
     this.moveHome = new Animated.ValueXY({ x: 0, y: 0 })
     this.moveWizard = new Animated.ValueXY({ x: width, y: 0 })
     this.movePagination = new Animated.ValueXY({ x: 0, y: -30 })
@@ -43,6 +47,9 @@ class Root extends React.Component {
   async componentDidMount() {
     let preserve = await AsyncStorage.getItem('@minow.dbt.dime:preserve')
     this.props.setEnableHistory(!(preserve === 'false'))
+
+    let history = await AsyncStorage.getItem('@minow.dbt.dime:history')
+    this.props.setHistory(JSON.parse(history || '[]'))
 
     await Font.loadAsync({
       'open-sans': require('../assets/fonts/OpenSans-Regular.ttf'),
@@ -73,27 +80,35 @@ class Root extends React.Component {
     })
 
     this.props.setIsLoaded(true)
+    SplashScreen.hide()
+
+    Animated.timing(this.opacityContainer, {
+      toValue: 1,
+      duration: 300,
+      easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
+      useNativeDriver: true
+    }).start()
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if(nextProps.isInGame !== this.props.isInGame){
+  componentDidUpdate(prevProps) {
+    if(prevProps.isInGame !== this.props.isInGame){
       Animated.parallel([
         Animated.timing(this.moveWizard, {
-          toValue: { x: nextProps.isInGame ? 0 : width, y: 0 },
+          toValue: { x: this.props.isInGame ? 0 : width, y: 0 },
           duration: 200,
           useNativeDriver: true
         }),
         Animated.timing(this.moveHome, {
-          toValue: { x: nextProps.isInGame ? -width : 0, y: 0 },
+          toValue: { x: this.props.isInGame ? -width : 0, y: 0 },
           duration: 200,
           useNativeDriver: true
         })
       ]).start()
     }
-
-    if(nextProps.isFullScreen !== this.props.isFullScreen){
+  
+    if(prevProps.isFullScreen !== this.props.isFullScreen){
       Animated.timing(this.movePagination, {
-        toValue: { x: 0, y: nextProps.isFullScreen ? 0 : -30 },
+        toValue: { x: 0, y: this.props.isFullScreen ? 0 : -30 },
         duration: 200,
         useNativeDriver: true
       }).start()
@@ -125,7 +140,7 @@ class Root extends React.Component {
       <View style={styles.container}>
         <LinearGradient colors={['#234051', '#323a45']} style={GlobalStyles.background} />
         {this.props.isLoaded && 
-        <View>
+        <Animated.View style={{ opacity: this.opacityContainer }}>
           <Animated.View style={{ transform: this.moveHome.getTranslateTransform() }}>
             <Carousel
               ref={c => this._pages = c }
@@ -139,8 +154,7 @@ class Root extends React.Component {
               itemHeight={height}
               sliderWidth={width}
               itemWidth={width}
-              triggerRenderingHack={1}
-              onSnapToItem={this.props.setPage}
+              onBeforeSnapToItem={this.props.setPage}
             />
             <Animated.View style={{ position: 'absolute', width: width, bottom: -30, transform: this.movePagination.getTranslateTransform() }}>
               <Pagination
@@ -164,7 +178,7 @@ class Root extends React.Component {
           <Animated.View style={{ ...styles.wizard, transform: this.moveWizard.getTranslateTransform() }}>
             <Wizard />
           </Animated.View>
-        </View>}
+        </Animated.View>}
       </View>)
   }
 }
@@ -205,7 +219,8 @@ const mapDispatchToProps = {
   setGameDescribed: Actions.setGameDescribed,
   setEnableHistory: Actions.setEnableHistory,
   setIsInThanks: Actions.setIsInThanks,
-  setIsInMenu: Actions.setIsInMenu
+  setIsInMenu: Actions.setIsInMenu,
+  setHistory: Actions.setHistory
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root)

@@ -9,23 +9,17 @@ import {
   StyleSheet
 } from 'react-native'
 
-import GlobalStyles from '../resources/styles.js'
-
 class MultilineInput extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      characters: 0,
-      height: 30
-    }
+    this.state = { height: 30 }
 
     this.onTextChange = this.onTextChange.bind(this)
     this.onContentChange = this.onContentChange.bind(this)
   }
 
   onTextChange(text) {
-    this.setState({ characters: text.length })
     this.props.onChange(text)
   }
 
@@ -39,7 +33,7 @@ class MultilineInput extends React.Component {
     return (
       <View style={styles.wrapper}>
         <TextInput style={{ ...styles.input, height: this.state.height }} value={this.props.value} placeholder={this.props.placeholder} maxLength={this.props.maxLength} multiline={true} onChangeText={this.onTextChange} onContentSizeChange={this.onContentChange} textAlignVertical="center"></TextInput>
-        {this.props.maxLength > -1 && <Text style={styles.count}>{this.state.characters} / {this.props.maxLength}</Text>}
+        {this.props.maxLength > -1 && <Text style={styles.count}>{this.props.title.length} / {this.props.maxLength}</Text>}
       </View>)
   }
 }
@@ -69,4 +63,11 @@ MultilineInput.propTypes = {
   placeholder: PropTypes.string
 }
 
-export default MultilineInput
+const mapStateToProps = (state) => ({
+  title: state.Game.title
+})
+
+const mapDispatchToProps = {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MultilineInput)

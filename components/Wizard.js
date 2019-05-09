@@ -19,8 +19,6 @@ import Result from './Result'
 
 import Actions from '../redux/actions'
 
-import GlobalStyles from '../resources/styles'
-
 const { width, height } = Dimensions.get('window')
 
 class Wizard extends React.Component {
@@ -46,20 +44,20 @@ class Wizard extends React.Component {
     || nextProps.answers.length !== this.props.answers.length
   }
 
-  async componentDidMount() {
-    let history = await AsyncStorage.getItem('@minow.dbt.dime:history')
-    this.props.setHistory(JSON.parse(history || '[]'))
-  }
-
   componentDidUpdate(prevProps) {
     if(prevProps.step !== this.props.step){
       this.setStep(this.props.step)
+    }
+
+    if(this._wizard){
+      this._wizard.triggerRenderingHack()
     }
   }
 
   async onComplete() {
     if(this.props.enableHistory){
-      let history = JSON.parse(JSON.stringify(this.props.history || []))
+      let history = await AsyncStorage.getItem('@minow.dbt.dime:history')
+      history = JSON.parse(history) || []
   
       history.push({
         type: this.props.type,
@@ -124,9 +122,8 @@ class Wizard extends React.Component {
           sliderWidth={styles.panel.width}
           itemWidth={styles.panel.width}
           getItemLayout={this.getStepLayout}
-          triggerRenderingHack={1}
           keyboardShouldPersistTaps="handled"
-          onSnapToItem={(index) => this.setState({ index: index }) }
+          onBeforeSnapToItem={(index) => this.setState({ index: index }) }
         />
         {this._wizard && <Pagination
           dotsLength={4}
@@ -141,9 +138,6 @@ class Wizard extends React.Component {
             borderRadius: 5,
             marginHorizontal: 8,
             backgroundColor: 'rgba(255, 255, 255, 0.92)'
-          }}
-          inactiveDotStyle={{
-            // Define styles for inactive dots here
           }}
           inactiveDotOpacity={0.4}
           inactiveDotScale={0.6}
@@ -176,7 +170,6 @@ const mapStateToProps = (state) => ({
   type: state.Game.type,
   title: state.Game.title,
   answers: state.Game.answers,
-  history: state.History.history,
   enableHistory: state.Settings.enableHistory
 })
 

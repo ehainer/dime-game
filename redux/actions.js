@@ -73,7 +73,7 @@ export default {
   resetGame: () => {
     return (dispatch) => {
       dispatch({ type: 'SET_ANSWERS', payload: [] })
-      dispatch({ type: 'SET_GAME_STEP', payload: 0 })
+      dispatch({ type: 'SET_GAME_STEP', payload: -1 })
       dispatch({ type: 'SET_GAME_TYPE', payload: null })
       dispatch({ type: 'SET_GAME_TITLE', payload: '' })
       dispatch({ type: 'SET_GAME_STARTED', payload: false })

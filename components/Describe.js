@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import {
   View,
@@ -56,7 +55,7 @@ class Describe extends React.Component {
       <View style={GlobalStyles.step}>
         <View style={GlobalStyles.frame}>
           <View style={GlobalStyles.header}>
-            <Text style={GlobalStyles.h1}>Describe The Situation</Text>
+            <Text style={GlobalStyles.h1}>Describe Situation</Text>
             <Text style={GlobalStyles.caption}>In a few words, briefly describe what it is you're trying to decide how strongly to ask or say no to.</Text>
           </View>
           <View style={styles.description}>

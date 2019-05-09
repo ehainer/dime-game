@@ -35,24 +35,19 @@ class About extends React.Component {
     this.onClickNext = this.onClickNext.bind(this)
     this.onClickThanks = this.onClickThanks.bind(this)
     this.onTickThanks = this.onTickThanks.bind(this)
-    this.showThanks = this.showThanks.bind(this)
-    this.hideThanks = this.hideThanks.bind(this)
+    this.onToggleThanks = this.onToggleThanks.bind(this)
   }
 
-  componentWillUpdate(nextProps) {
-    if(nextProps.isInThanks !== this.props.isInThanks){
-      if(nextProps.isInThanks){
-        this.showThanks()
-      }else{
-        this.hideThanks()
-      }
+  componentDidUpdate(prevProps) {
+    if(prevProps.isInThanks !== this.props.isInThanks){
+      this.onToggleThanks()
     }
   }
 
   onClickNext() {
     this.props.resetGame().then(() => {
       this.props.setIsInGame(true)
-      this.forceUpdate()
+      this.props.setGameStep(0)
     })
   }
 
@@ -72,41 +67,21 @@ class About extends React.Component {
     }
     this.setState({ tick: 0 })
   }
-  
-  showThanks() {
-    this.props.setIsFullScreen(true)
-    this.props.setScrollEnabled(false)
+
+  onToggleThanks() {
+    this.props.setIsFullScreen(this.props.isInThanks)
+    this.props.setScrollEnabled(!this.props.isInThanks)
 
     Animated.parallel([
       Animated.timing(this.moveThanks, {
-        toValue: { x: 0, y: 0 },
+        toValue: { x: this.props.isInThanks ? 0 : -width, y: 0 },
         duration: 1000,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true
       }),
       Animated.timing(this.moveAbout, {
-        toValue: { x: width, y: 0 },
+        toValue: { x: this.props.isInThanks ? width : 0, y: 0 },
         duration: 1000,
-        easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
-        useNativeDriver: true
-      })
-    ]).start()
-  }
-
-  hideThanks() {
-    this.props.setIsFullScreen(false)
-    this.props.setScrollEnabled(true)
-
-    Animated.parallel([
-      Animated.timing(this.moveThanks, {
-        toValue: { x: -width, y: 0 },
-        duration: 200,
-        easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
-        useNativeDriver: true
-      }),
-      Animated.timing(this.moveAbout, {
-        toValue: { x: 0, y: 0 },
-        duration: 200,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true
       })

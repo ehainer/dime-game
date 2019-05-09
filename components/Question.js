@@ -38,7 +38,9 @@ class Question extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.box}>
-          <Text style={{ ...styles.category }}>{this.props.category}</Text>
+          <View style={styles.categoryWrapper}>
+            <Text style={{ ...styles.category }}>{this.props.category}</Text>
+          </View>
           <View style={styles.content}>
             <Text style={styles.question}>{this.props.question}</Text>
           </View>
@@ -66,15 +68,18 @@ const styles = StyleSheet.create({
   box: {
     flex: -1
   },
+  categoryWrapper: {
+    alignItems: 'center'
+  },
   category: {
     fontSize: 30,
+    lineHeight: 35,
     color: 'white',
     textAlign: 'center',
     marginBottom: 40,
-    marginHorizontal: 50,
     padding: 10,
     fontFamily: 'palanquin',
-    borderBottomWidth: 3,
+    borderBottomWidth: 4,
     borderBottomColor: 'lightseagreen'
   },
   content: {

@@ -224,9 +224,7 @@ class History extends React.Component {
   }
 
   onClickStart() {
-    this.props.resetGame().then(() => {
-      this.props.setIsInGame(true)
-    })
+    this.props.onChangePage(1)
   }
 
   render() {
