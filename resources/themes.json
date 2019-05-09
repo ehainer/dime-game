@@ -1,0 +1,117 @@
+[
+  {
+    "name": "Nighthawk",
+    "highlight": "#E0BA65",
+    "colors": ["#2980b9", "#2c3e50"]
+  },
+  {
+    "name": "Royal",
+    "highlight": "#24568B",
+    "colors": ["#141E30", "#243B55"]
+  },
+  {
+    "name": "Mauve",
+    "highlight": "#C95E5E",
+    "colors": ["#42275a", "#734b6d"]
+  },
+  {
+    "name": "Under the Lake",
+    "highlight": "#A9D376",
+    "colors": ["#093028", "#237A57"]
+  },
+  {
+    "name": "Frost",
+    "highlight": "#1C8AA1",
+    "colors": ["#000428", "#004e92"]
+  },
+  {
+    "name": "Deep Space",
+    "highlight": "#889989",
+    "colors": ["#000000", "#434343"]
+  },
+  {
+    "name": "Turquoise Flow",
+    "highlight": "#94C598",
+    "colors": ["#136a8a", "#267871"]
+  },
+  {
+    "name": "Purple Bliss",
+    "highlight": "#7b249e",
+    "colors": ["#360033", "#0b8793"]
+  },
+  {
+    "name": "Influenza",
+    "highlight": "#533664",
+    "colors": ["#C04848", "#480048"]
+  },
+  {
+    "name": "Moss",
+    "highlight": "#",
+    "colors": ["#134E5E", "#71B280"]
+  },
+  {
+    "name": "Mirage",
+    "highlight": "#",
+    "colors": ["#16222A", "#3A6073"]
+  },
+  {
+    "name": "Aubergine",
+    "highlight": "#",
+    "colors": ["#AA076B", "#61045F"]
+  },
+  {
+    "name": "Sea Blue",
+    "highlight": "#",
+    "colors": ["#2b5876", "#4e4376"]
+  },
+  {
+    "name": "Moonlit Asteroid",
+    "highlight": "#",
+    "colors": ["#0F2027", "#203A43", "#2C5364"]
+  },
+  {
+    "name": "Harmonic Energy",
+    "highlight": "#",
+    "colors": ["#16A085", "#F4D03F"]
+  },
+  {
+    "name": "Rose Water",
+    "highlight": "#",
+    "colors": ["#E55D87", "#5FC3E4"]
+  },
+  {
+    "name": "Aqua Marine",
+    "highlight": "#",
+    "colors": ["#1A2980", "#26D0CE"]
+  },
+  {
+    "name": "Sea Weed",
+    "highlight": "#",
+    "colors": ["#4CB8C4", "#3CD3AD"]
+  },
+  {
+    "name": "Blurry Beach",
+    "highlight": "#",
+    "colors": ["#d53369", "#cbad6d"]
+  },
+  {
+    "name": "Endless River",
+    "highlight": "#",
+    "colors": ["#43cea2", "#185a9d"]
+  },
+  {
+    "name": "Sweet Morning",
+    "highlight": "#",
+    "colors": ["#FF5F6D", "#FFC371"]
+  },
+  {
+    "name": "Mild",
+    "highlight": "#",
+    "colors": ["#67B26F", "#4ca2cd"]
+  },
+  {
+    "name": "DuMont Network",
+    "highlight": "#ffffff",
+    "colors": ["#000000", "#000000"]
+  }
+]
