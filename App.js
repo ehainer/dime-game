@@ -11,8 +11,6 @@ import History from './redux/reducers/History'
 import States from './redux/reducers/States'
 import Game from './redux/reducers/Game'
 
-import GlobalStyles from './resources/styles'
-
 const store = createStore(combineReducers({
   Settings,
   History,
@@ -24,8 +22,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        
-        <Root style={GlobalStyles.page} />
+        <Root />
       </Provider>
     )
   }

@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "0.1.1",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,7 +28,9 @@
     },
     "android": {
       "package": "com.minow.dbt.dime",
-      "permissions": []
+      "permissions": [],
+      "versionCode": 2,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.minow.dbt.dime"
     }
   }
 }
