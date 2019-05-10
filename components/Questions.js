@@ -70,12 +70,12 @@ class Questions extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        <View style={{ flex: 1 }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>{this.getTitle()}</Text>
             {this.props.title.trim() !== '' && <Text style={GlobalStyles.caption}>"{this.props.title.trim()}"</Text>}
           </View>
-          <View style={GlobalStyles.flex} onLayout={this.setQuestionsLayout}>
+          <View style={{ flex: 1, paddingHorizontal: 20 }} onLayout={this.setQuestionsLayout}>
             {this.state.layout && this.state.layout.height && <Carousel
               ref={(c) => { this._carousel = c }}
               activeAnimationType="decay"
@@ -89,21 +89,12 @@ class Questions extends React.Component {
               keyExtractor={this.keyExtractor}
             />}
           </View>
-          <View style={styles.progress}>
-          </View>
         </View>
       </View>)
   }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    marginBottom: 15
-  },
-  progress: {
-    marginTop: 20,
-    height: 40
-  }
 })
 
 const mapStateToProps = (state) => ({

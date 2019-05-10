@@ -54,11 +54,11 @@ class Question extends React.Component {
             <Text style={styles.question}>{this.props.question}</Text>
           </View>
           <View style={{ ...GlobalStyles.row, ...styles.buttons }}>
-            <View style={GlobalStyles.flex}>
+            <View style={{ flex: 1 }}>
               <Button checkable={true} checked={this.props.answer === 'YES'} backgroundColor="lightseagreen" onPress={this.onAnswerYes} title="YES" />
             </View>
             <View style={GlobalStyles.spacer}></View>
-            <View style={GlobalStyles.flex}>
+            <View style={{ flex: 1 }}>
               <Button checkable={true} checked={this.props.answer === 'NO'} backgroundColor="lightseagreen" onPress={this.onAnswerNo} title="NO" />
             </View>
           </View>

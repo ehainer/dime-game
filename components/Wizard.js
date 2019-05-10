@@ -33,7 +33,6 @@ class Wizard extends React.Component {
     this.setStep = this.setStep.bind(this)
     this.getStep = this.getStep.bind(this)
     this.getSteps = this.getSteps.bind(this)
-    this.setLayout = this.setLayout.bind(this)
     this.onComplete = this.onComplete.bind(this)
   }
 
@@ -111,14 +110,9 @@ class Wizard extends React.Component {
     return { length: width, offset: width * index, index }
   }
 
-  setLayout(event) {
-    console.log('Layout', event.nativeEvent.layout)
-    this.setState({ layout: event.nativeEvent.layout })
-  }
-
   render() {
     return (
-      <View style={{ ...styles.wizard }} onLayout={this.setLayout}>
+      <View style={{ flex: 1 }} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
         {this.state.layout && <Carousel
           ref={(l) => { this._wizard = l }}
           data={this.getSteps()}
@@ -158,13 +152,6 @@ Wizard.propTypes = {
 }
 
 const styles = StyleSheet.create({
-  wizard: {
-    flex: 1
-  },
-  panel: {
-    width: width,
-    height: height - (StatusBar.currentHeight || 0)
-  }
 })
 
 const mapStateToProps = (state) => ({

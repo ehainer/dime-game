@@ -9,9 +9,9 @@ import {
   Dimensions
 } from 'react-native'
 
-import Button from './Button'
-
 import Svg, { G, Path } from 'react-native-svg'
+
+import Button from './Button'
 
 import Actions from '../redux/actions'
 
@@ -94,15 +94,15 @@ class Challenge extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        <View style={{ flex: 1 }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>I Need Help With...</Text>
           </View>
-          <View style={styles.grid}>
-            <View style={styles.option}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
+            <View style={{ paddingVertical: 20 }}>
               <Button style={{ ...styles.button }} backgroundColor={this.getButtonColor('ASK')} icon={this.getAskIcon()} onPress={() => this.setGameType('ASK')} title="Asking" />
             </View>
-            <View style={styles.option}>
+            <View style={{ paddingVertical: 20 }}>
               <Button style={{ ...styles.button }} backgroundColor={this.getButtonColor('SAY_NO')} icon={this.getSayNoIcon()} onPress={() => this.setGameType('SAY_NO')} title="Saying No" />
             </View>
           </View>
@@ -112,16 +112,6 @@ class Challenge extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  grid: {
-    flex: 1,
-    marginTop: 20,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  option: {
-    paddingVertical: 20
-  },
   button: {
     width: width * 0.6,
     height: width * 0.6,

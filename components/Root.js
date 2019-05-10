@@ -11,7 +11,8 @@ import {
   BackHandler,
   AsyncStorage,
   Easing,
-  SafeAreaView
+  SafeAreaView,
+  Platform
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -28,6 +29,7 @@ import Actions from '../redux/actions'
 const { width, height } = Dimensions.get('window')
 
 import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 
 class Root extends React.Component {
   constructor(props) {
@@ -142,8 +144,8 @@ class Root extends React.Component {
         <LinearGradient colors={['#234051', '#323a45']} style={GlobalStyles.background} />
         {this.props.isLoaded && 
         <SafeAreaView>
-          <Animated.View style={{ flex: 1, opacity: this.opacityContainer }}>
-            <Animated.View style={{ width: width, transform: this.moveHome.getTranslateTransform() }}>
+          <Animated.View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight || 0), opacity: this.opacityContainer }}>
+            <Animated.View style={{ flex: 1, transform: this.moveHome.getTranslateTransform() }}>
               <Carousel
                 ref={c => this._pages = c }
                 data={this.getPages()}
@@ -177,7 +179,7 @@ class Root extends React.Component {
                 />
               </Animated.View>
             </Animated.View>
-            <Animated.View style={{ ...styles.wizard, transform: this.moveWizard.getTranslateTransform() }}>
+            <Animated.View style={{ flex: 1, width: Layout.width, height: Layout.height - Layout.space, position: 'absolute', marginTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight || 0), transform: this.moveWizard.getTranslateTransform() }}>
               <Wizard />
             </Animated.View>
           </Animated.View>

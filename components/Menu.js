@@ -7,19 +7,15 @@ import {
   StyleSheet,
   AsyncStorage,
   Switch,
-  Linking,
   Alert,
   TouchableHighlight,
   Animated,
   StatusBar,
   Dimensions,
-  ScrollView,
   Easing
 } from 'react-native'
 
 import Credits from './Credits'
-
-import Markdown from 'react-native-markdown-renderer'
 
 import Actions from '../redux/actions'
 
@@ -120,10 +116,10 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.page} removeClippedSubviews={true}>
-        <View style={{ overflow: 'hidden' }} removeClippedSubviews={true}>
-          <Animated.View style={{ ...GlobalStyles.page, marginTop: 0, paddingTop: 0, overflow: 'hidden', transform: this.moveMenu.getTranslateTransform() }}>
-            <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded }}>
+      <View style={{ flex: 1 }} removeClippedSubviews={true}>
+        <View style={{ flex: 1, overflow: 'hidden' }} removeClippedSubviews={true}>
+          <Animated.View style={{ flex: 1, overflow: 'hidden', transform: this.moveMenu.getTranslateTransform() }}>
+            <View style={GlobalStyles.header}>
               <Text style={GlobalStyles.h1}>Menu</Text>
             </View>
             <View style={styles.list}>
@@ -150,8 +146,8 @@ class Menu extends React.Component {
               </View>
             </View>
           </Animated.View>
-          <Animated.View style={{ ...styles.panel, ...styles.credits, overflow: 'hidden', transform: this.moveCredits.getTranslateTransform() }}>
-            <Credits />
+          <Animated.View style={{ flex: 1, position: 'absolute', overflow: 'hidden', transform: this.moveCredits.getTranslateTransform() }}>
+            <Credits onBack={() => this.setState({ showCredits: false })} />
           </Animated.View>
         </View>
       </View>)
@@ -162,54 +158,11 @@ Menu.propTypes = {
   enableHistory: PropTypes.bool.isRequired
 }
 
-const markdownStyles = StyleSheet.create({
-  heading: {
-    color: '#ffffff',
-    fontFamily: 'palanquin'
-  },
-  heading1: {
-    color: 'white',
-    fontSize: 32
-  },
-  heading2: {
-    color: 'white',
-    fontSize: 24,
-  },
-  heading3: {
-    color: 'white',
-    fontSize: 18,
-  },
-  heading4: {
-    color: 'white',
-    fontSize: 16,
-  },
-  heading5: {
-    color: 'white',
-    fontSize: 13,
-  },
-  heading6: {
-    color: 'white',
-    fontSize: 11,
-  },
-  codeBlock: {
-    fontFamily: 'open-sans'
-  },
-  inlineCode: {
-    fontFamily: 'open-sans'
-  },
-  paragraph: {
-    color: 'white',
-    fontSize: 16
-  }
-})
-
 const styles = StyleSheet.create({
   panel: {
     position: 'absolute',
     width: width,
     height: height - (StatusBar.currentHeight || 0)
-  },
-  license: {
   },
   list: {
     borderTopWidth: 1,

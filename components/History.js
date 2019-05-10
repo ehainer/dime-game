@@ -16,18 +16,19 @@ import {
   AsyncStorage
 } from 'react-native'
 
+import Svg, { G, Path } from 'react-native-svg'
+
 import { format } from 'date-fns'
 
 import Button from './Button'
 import Entry from './Entry'
 
 import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 import Questions from '../resources/questions.json'
 import Answers from '../resources/answers.json'
 
 import Actions from '../redux/actions'
-
-const { width, height } = Dimensions.get('window')
 
 class History extends React.Component {
   constructor(props) {
@@ -39,21 +40,21 @@ class History extends React.Component {
       solution: '',
       answers: [],
       date: '',
-      open: false
+      open: false,
+      headerLayout: null,
+      footerLayout: null
     }
 
     this.topSpace = (StatusBar.currentHeight || 0) + 5
-    this.moveEntry = new Animated.ValueXY({ x: width, y: 0 })
+    this.moveEntry = new Animated.ValueXY({ x: Layout.width, y: 0 })
     this.moveHistory = new Animated.ValueXY({ x: 0, y: 0 })
-    this.opacityEntry = new Animated.Value(0)
 
     this.moveClear = new Animated.ValueXY({ x: 0, y: 0 })
 
     this.getHistory = this.getHistory.bind(this)
     this.showEntry = this.showEntry.bind(this)
     this.hideEntry = this.hideEntry.bind(this)
-    this.showClear = this.showClear.bind(this)
-    this.hideClear = this.hideClear.bind(this)
+    this.toggleClear = this.toggleClear.bind(this)
     this.getAnswer = this.getAnswer.bind(this)
     this.getSolution = this.getSolution.bind(this)
     this.onClearHistory = this.onClearHistory.bind(this)
@@ -68,20 +69,10 @@ class History extends React.Component {
         return true
       }
     })
-
-    if(this.props.history.length){
-      this.showClear()
-    }else{
-      this.hideClear()
-    }
   }
 
-  componentWillUpdate(nextProps) {
-    if(nextProps.history.length === 0){
-      this.hideClear()
-    }else{
-      this.showClear()
-    }
+  componentDidUpdate() {
+    this.toggleClear()
   }
 
   getHistory() {
@@ -115,18 +106,9 @@ class History extends React.Component {
     return this.state.type === 'ASK' ? 'Asking' : 'Saying No'
   }
 
-  showClear() {
+  toggleClear() {
     Animated.timing(this.moveClear, {
-      toValue: { x: 0, y: 0 },
-      duration: 250,
-      easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
-      useNativeDriver: true
-    }).start()
-  }
-
-  hideClear() {
-    Animated.timing(this.moveClear, {
-      toValue: { x: 0, y: 200 },
+      toValue: { x: 0, y: this.props.history.length ? 0 : 200 },
       duration: 250,
       easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
       useNativeDriver: true
@@ -147,19 +129,13 @@ class History extends React.Component {
     }, () => {
       Animated.parallel([
         Animated.timing(this.moveHistory, {
-          toValue: { x: -width, y: 0 },
+          toValue: { x: -Layout.width, y: 0 },
           duration: 250,
           easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
           useNativeDriver: true
         }),
         Animated.timing(this.moveEntry, {
           toValue: { x: 0, y: 0 },
-          duration: 250,
-          easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
-          useNativeDriver: true
-        }),
-        Animated.timing(this.opacityEntry, {
-          toValue: 1,
           duration: 250,
           easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
           useNativeDriver: true
@@ -181,13 +157,7 @@ class History extends React.Component {
         useNativeDriver: true
       }),
       Animated.timing(this.moveEntry, {
-        toValue: { x: width, y: 0 },
-        duration: 250,
-        easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
-        useNativeDriver: true
-      }),
-      Animated.timing(this.opacityEntry, {
-        toValue: 0,
+        toValue: { x: Layout.width, y: 0 },
         duration: 250,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true
@@ -229,9 +199,9 @@ class History extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Animated.View style={{ flex: 1, paddingBottom: 30, transform: this.moveHistory.getTranslateTransform() }}>
-          <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded }}>
+      <View style={{ flex: 1 }} removeClippedSubviews={true}>
+        <Animated.View style={{ flex: 1, paddingBottom: 30, overflow: 'hidden', transform: this.moveHistory.getTranslateTransform() }}>
+          <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>History</Text>
           </View>
           <ScrollView style={styles.list}>
@@ -249,27 +219,43 @@ class History extends React.Component {
             <Button backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
           </Animated.View>
         </Animated.View>
-        <Animated.View style={{ ...styles.entry, opacity: this.opacityEntry, transform: this.moveEntry.getTranslateTransform() }}>
-          <View style={{ padding: 20 }}>
-            <View>
-              <Text style={GlobalStyles.h1}>{this.state.title}</Text>
-              <View style={{ ...GlobalStyles.row, alignItems: 'center' }}>
-                <Text style={GlobalStyles.caption}>{this.getGameType()}</Text>
-                <Text style={{ ...GlobalStyles.dot, ...GlobalStyles.caption, lineHeight: 16 }}>&middot;</Text>
-                <Text style={GlobalStyles.caption}>{this.getDate()}</Text>
-              </View>
+        <Animated.View style={{ flex: 1, position: 'absolute', overflow: 'hidden', transform: this.moveEntry.getTranslateTransform() }}>
+          <View style={GlobalStyles.header} onLayout={(e) => this.setState({ headerLayout: e.nativeEvent.layout })}>
+            <Svg width={23} height={30} style={{ position: 'absolute', left: 20, top: 20, zIndex: 999 }} onPress={this.hideEntry} viewBox="0 0 492 492">
+              <G>
+                <G>
+                  <Path fill="white" d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124
+                    c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844
+                    L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412
+                    c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008
+                    c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788
+                    C492,219.198,479.172,207.418,464.344,207.418z"/>
+                </G>
+              </G>
+            </Svg>
+            <Text style={GlobalStyles.h1}>     {this.state.title}</Text>
+            <View style={{ ...GlobalStyles.row, top: -8, alignItems: 'center' }}>
+              <Text style={GlobalStyles.caption}>{this.getGameType()}</Text>
+              <Text style={{ ...GlobalStyles.dot, ...GlobalStyles.caption, lineHeight: 16 }}>&middot;</Text>
+              <Text style={GlobalStyles.caption}>{this.getDate()}</Text>
             </View>
           </View>
-          <ScrollView style={styles.questions}>
-            {this.getQuestions().map((q, index) => {
-              return (<View key={q.category} style={styles.answer}>
-                <Text style={styles.categoryText}>{q.category}</Text>
-                <Text style={styles.questionText}>{q.question}</Text>
-                <Text style={styles.answerText}>{this.getAnswer(index)}</Text>
-              </View>)
-            })}
-          </ScrollView>
-          <View style={styles.resultWrapper}>
+          {this.state.headerLayout && this.state.footerLayout && <View style={{ height: Layout.height - this.state.headerLayout.height - this.state.footerLayout.height - Layout.space }}>
+            <ScrollView contentContainerStyle={{
+              paddingHorizontal: 20,
+              borderTopWidth: 1,
+              borderTopColor: 'rgba(0, 0, 0, 0.1)'
+            }}>
+              {this.getQuestions().map((q, index) => {
+                return (<View key={q.category} style={styles.answer}>
+                  <Text style={styles.categoryText}>{q.category}</Text>
+                  <Text style={styles.questionText}>{q.question}</Text>
+                  <Text style={styles.answerText}>{this.getAnswer(index)}</Text>
+                </View>)
+              })}
+            </ScrollView>
+          </View>}
+          <View style={{ ...styles.resultWrapper }} onLayout={(e) => this.setState({ footerLayout: e.nativeEvent.layout })}>
             <View style={styles.labelWrapper}>
               <Text style={styles.label}>Solution</Text>
               <Text style={styles.label}>Intensity</Text>
@@ -285,15 +271,6 @@ class History extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  entry: {
-    position: 'absolute',
-    height: '100%',
-    width: width
-  },
-  history: {
-    paddingBottom: 30,
-    paddingHorizontal: 20
-  },
   empty: {
     flex: -1,
     color: 'white',
@@ -312,11 +289,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 20,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0, 0, 0, 0.1)'
-  },
-  questions: {
-    paddingHorizontal: 20,
     borderTopWidth: 1,
     borderTopColor: 'rgba(0, 0, 0, 0.1)'
   },
@@ -353,8 +325,6 @@ const styles = StyleSheet.create({
   },
   resultWrapper: {
     padding: 20,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0, 0, 0, 0.1)',
     backgroundColor: 'lightseagreen'
   },
   labelWrapper: {

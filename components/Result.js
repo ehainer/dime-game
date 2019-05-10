@@ -66,12 +66,12 @@ class Result extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.step}>
-        <View style={GlobalStyles.frame}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>{this.getTitle()}</Text>
           </View>
-          <View style={{ ...GlobalStyles.flex, ...GlobalStyles.center }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20 }}>
             <View style={styles.outcome}>
               <View style={styles.progress}>
                 <Text style={styles.intensity}>{this.getIntensity()}</Text>
@@ -89,12 +89,10 @@ class Result extends React.Component {
                   backgroundColor="rgba(0, 0, 0, 0.3)"
                 />
               </View>
-              <View style={GlobalStyles.padded}>
-                <Text style={styles.solution}>{this.getSolution()}</Text>
-              </View>
+              <Text style={styles.solution}>{this.getSolution()}</Text>
             </View>
           </View>
-          <View>
+          <View style={{ paddingHorizontal: 20 }}>
             <Button backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
           </View>
         </View>

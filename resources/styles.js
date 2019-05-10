@@ -1,6 +1,4 @@
-import { StyleSheet, Dimensions, StatusBar, Platform } from 'react-native'
-
-const { width, height } = Dimensions.get('window')
+import { StyleSheet } from 'react-native'
 
 module.exports = StyleSheet.create({
   background: {
@@ -11,29 +9,10 @@ module.exports = StyleSheet.create({
     left: 0,
     zIndex: 0
   },
-  page: {
-    width: width,
-    height: height - (StatusBar.currentHeight || 0),
-    marginTop: StatusBar.currentHeight || 0,
-    paddingTop: 5,
-    paddingBottom: 35
-  },
-  window: {
-    width: width,
-    height: height - (StatusBar.currentHeight || 0)
-  },
-  step: {
-    flex: 1,
-    width: width,
-    height: height
-  },
-  frame: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
   header: {
     flex: -1,
-    paddingTop: 18,
+    paddingTop: 20,
+    paddingHorizontal: 20,
     paddingBottom: 10
   },
   h1: {
@@ -65,15 +44,6 @@ module.exports = StyleSheet.create({
     fontFamily: 'open-sans',
     textAlign: 'center'
   },
-  padded: {
-    paddingHorizontal: 20
-  },
-  flex: {
-    flex: 1
-  },
-  flexSmall: {
-    flex: -1
-  },
   center: {
     alignItems: 'center',
     justifyContent: 'center'
@@ -83,9 +53,5 @@ module.exports = StyleSheet.create({
   },
   row: {
     flexDirection: 'row'
-  },
-  alignRight: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
   }
 })
