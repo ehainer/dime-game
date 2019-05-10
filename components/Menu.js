@@ -135,7 +135,7 @@ class Menu extends React.Component {
               <TouchableHighlight onPress={this.onClickCredits} style={{ ...styles.item, ...styles.clickable }} activeOpacity={1} underlayColor="rgba(0, 0, 0, 0.2)">
                 <View style={styles.text}>
                   <Text style={styles.title}>Legal Information</Text>
-                  <Text style={styles.subtitle}>Credits & Attribution</Text>
+                  <Text style={styles.subtitle}>Credits & Privacy Policy</Text>
                 </View>
               </TouchableHighlight>
               <View style={styles.item}>

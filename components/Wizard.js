@@ -8,7 +8,8 @@ import {
   Dimensions,
   AsyncStorage,
   StatusBar,
-  SafeAreaView
+  SafeAreaView,
+  Platform
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -131,7 +132,7 @@ class Wizard extends React.Component {
           {this._wizard && <Pagination
             dotsLength={4}
             activeDotIndex={this.state.index}
-            containerStyle={{ marginBottom: 20, paddingVertical: 20 }}
+            containerStyle={{ marginBottom: Platform.OS === 'ios' ? 20 : 0, paddingVertical: 20 }}
             carouselRef={this._wizard}
             tappableDots={!!this._wizard}
             scrolling

@@ -182,11 +182,20 @@ class Credits extends React.Component {
 
               <View style={styles.section}>
                 <View>
+                  <Text style={styles.sectionTitle}>Privacy Policy</Text>
+                  <Text style={{ ...styles.text, marginBottom: 10 }}>Your data never leaves this device. Period.</Text>
+                  <Text style={{ ...styles.text, marginBottom: 10 }}>There is no server involved at any point, and if you disable the dime game history, none of your data will ever exist on this device either. We also have no access to anything on your device, including the camera, SMS messages, files, or anything else.</Text>
+                  <Text style={styles.text}>If Ted Danson asked us today to see your data, there would be nothing to show him.</Text>
+                </View>
+              </View>
+
+              <View style={styles.section}>
+                <View>
                   <Text style={styles.sectionTitle}>Third-party Software</Text>
                   <Text style={{ ...GlobalStyles.caption, ...styles.sectionCaption }}>Awesome libraries without which would have made this app impossible. Or at least really, really difficult.</Text>
                   <Text style={styles.library} onPress={() => this.onClickLink('https://date-fns.org')}>date-fns</Text>
                   <Text style={styles.library} onPress={() => this.onClickLink('https://github.com/bartgryszko/react-native-circular-progress')}>react-native-circular-progress</Text>
-                  <Text style={styles.library} onPress={() => this.onClickLink('https://github.com/archriss/react-native-snap-carousel')}>react-native-snap-carousel</Text>
+                  <Text style={{ ...styles.library, marginBottom: 0 }} onPress={() => this.onClickLink('https://github.com/archriss/react-native-snap-carousel')}>react-native-snap-carousel</Text>
                 </View>
               </View>
 
