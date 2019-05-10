@@ -37,12 +37,16 @@ class Root extends React.Component {
     super(props)
 
     SplashScreen.preventAutoHide()
+
+    this.state = {
+      layout: null
+    }
     
     this.topSpace = StatusBar.currentHeight
     this.opacityContainer = new Animated.Value(0)
     this.moveHome = new Animated.ValueXY({ x: 0, y: 0 })
     this.moveWizard = new Animated.ValueXY({ x: width, y: 0 })
-    this.movePagination = new Animated.ValueXY({ x: 0, y: -30 })
+    this.movePagination = new Animated.ValueXY({ x: 0, y: 0 })
 
     this.getPage = this.getPage.bind(this)
     this.onChangePage = this.onChangePage.bind(this)
@@ -112,7 +116,7 @@ class Root extends React.Component {
   
     if(prevProps.isFullScreen !== this.props.isFullScreen){
       Animated.timing(this.movePagination, {
-        toValue: { x: 0, y: this.props.isFullScreen ? PixelRatio.getPixelSizeForLayoutSize(80) : -PixelRatio.getPixelSizeForLayoutSize(30) },
+        toValue: { x: 0, y: this.props.isFullScreen ? PixelRatio.getPixelSizeForLayoutSize(80) : 0 },
         duration: 200,
         useNativeDriver: true
       }).start()
@@ -146,7 +150,7 @@ class Root extends React.Component {
         {this.props.isLoaded && 
         <SafeAreaView>
           <Animated.View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight || 0), opacity: this.opacityContainer }}>
-            <Animated.View style={{ flex: 1, transform: this.moveHome.getTranslateTransform() }}>
+            <Animated.View style={{ flex: 1, transform: this.moveHome.getTranslateTransform() }} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
               <Carousel
                 ref={c => this._pages = c }
                 data={this.getPages()}
@@ -161,11 +165,11 @@ class Root extends React.Component {
                 itemWidth={width}
                 onBeforeSnapToItem={this.props.setPage}
               />
-              <Animated.View style={{ position: 'absolute', width: width, bottom: -PixelRatio.getPixelSizeForLayoutSize(30), transform: this.movePagination.getTranslateTransform() }}>
+              <Animated.View style={{ position: 'absolute', bottom: 0, width: Layout.width, transform: this.movePagination.getTranslateTransform() }}>
                 <Pagination
                   dotsLength={3}
                   activeDotIndex={this.props.page}
-                  containerStyle={{ marginBottom: Platform.OS === 'ios' ? PixelRatio.getPixelSizeForLayoutSize(20) : 0, paddingVertical: PixelRatio.getPixelSizeForLayoutSize(20) }}
+                  containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(10) }}
                   carouselRef={this._pages}
                   tappableDots={!!this._pages}
                   dotStyle={{
@@ -180,9 +184,9 @@ class Root extends React.Component {
                 />
               </Animated.View>
             </Animated.View>
-            <Animated.View style={{ flex: 1, width: Layout.width, height: Layout.height - Layout.space, position: 'absolute', marginTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight || 0), transform: this.moveWizard.getTranslateTransform() }}>
+            {this.state.layout && <Animated.View style={{ flex: 1, position: 'absolute', width: Layout.width, height: this.state.layout.height, marginTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight || 0), transform: this.moveWizard.getTranslateTransform() }}>
               <Wizard />
-            </Animated.View>
+            </Animated.View>}
           </Animated.View>
         </SafeAreaView>}
       </View>)

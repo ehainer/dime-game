@@ -130,10 +130,11 @@ class Wizard extends React.Component {
             keyboardShouldPersistTaps="handled"
             onBeforeSnapToItem={(index) => this.setState({ index: index }) }
           />}
-          {this._wizard && <Pagination
+          {this._wizard && <View style={{ position: 'absolute', bottom: 0, width: Layout.width }}>
+          <Pagination
             dotsLength={4}
             activeDotIndex={this.state.index}
-            containerStyle={{ marginBottom: Platform.OS === 'ios' ? PixelRatio.getPixelSizeForLayoutSize(20) : 0, paddingVertical: 20 }}
+            containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(10) }}
             carouselRef={this._wizard}
             tappableDots={!!this._wizard}
             scrolling
@@ -146,7 +147,8 @@ class Wizard extends React.Component {
             }}
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
-          />}
+          />
+          </View>}
         </View>
       </SafeAreaView>)
   }

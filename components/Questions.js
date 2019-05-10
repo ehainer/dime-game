@@ -5,7 +5,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions
+  PixelRatio
 } from 'react-native'
 
 import Carousel from 'react-native-snap-carousel'
@@ -15,10 +15,9 @@ import Question from './Question.js'
 import Actions from '../redux/actions'
 
 import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 
 import Options from '../resources/questions.json'
-
-const { width } = Dimensions.get('window')
 
 class Questions extends React.Component {
   constructor(props) {
@@ -75,7 +74,7 @@ class Questions extends React.Component {
             <Text style={GlobalStyles.h1}>{this.getTitle()}</Text>
             {this.props.title.trim() !== '' && <Text style={GlobalStyles.caption}>"{this.props.title.trim()}"</Text>}
           </View>
-          <View style={{ flex: 1, paddingHorizontal: 20 }} onLayout={this.setQuestionsLayout}>
+          <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: PixelRatio.getPixelSizeForLayoutSize(30) }} onLayout={this.setQuestionsLayout}>
             {this.state.layout && this.state.layout.height && <Carousel
               ref={(c) => { this._carousel = c }}
               activeAnimationType="decay"
@@ -84,8 +83,8 @@ class Questions extends React.Component {
               renderItem={this.getQuestion}
               sliderHeight={this.state.layout.height}
               itemHeight={this.state.layout.height}
-              sliderWidth={width - 40}
-              itemWidth={width - 40}
+              sliderWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
+              itemWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
               keyExtractor={this.keyExtractor}
             />}
           </View>

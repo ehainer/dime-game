@@ -6,7 +6,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions
+  PixelRatio
 } from 'react-native'
 
 import Svg, { G, Path } from 'react-native-svg'
@@ -97,11 +97,11 @@ class Challenge extends React.Component {
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>I Need Help With...</Text>
           </View>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}>
-            <View style={{ paddingVertical: 20 }}>
+          <View style={{ flex: 1, paddingBottom: PixelRatio.getPixelSizeForLayoutSize(30), alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ paddingVertical: 15 }}>
               <Button style={{ ...styles.button }} backgroundColor={this.getButtonColor('ASK')} icon={this.getAskIcon()} onPress={() => this.setGameType('ASK')} title="Asking" />
             </View>
-            <View style={{ paddingVertical: 20 }}>
+            <View style={{ paddingVertical: 15 }}>
               <Button style={{ ...styles.button }} backgroundColor={this.getButtonColor('SAY_NO')} icon={this.getSayNoIcon()} onPress={() => this.setGameType('SAY_NO')} title="Saying No" />
             </View>
           </View>
