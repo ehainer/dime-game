@@ -112,7 +112,7 @@ class Root extends React.Component {
   
     if(prevProps.isFullScreen !== this.props.isFullScreen){
       Animated.timing(this.movePagination, {
-        toValue: { x: 0, y: this.props.isFullScreen ? 50 : -30 },
+        toValue: { x: 0, y: this.props.isFullScreen ? PixelRatio.getPixelSizeForLayoutSize(80) : -PixelRatio.getPixelSizeForLayoutSize(30) },
         duration: 200,
         useNativeDriver: true
       }).start()
@@ -165,7 +165,7 @@ class Root extends React.Component {
                 <Pagination
                   dotsLength={3}
                   activeDotIndex={this.props.page}
-                  containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(20) }}
+                  containerStyle={{ marginBottom: Platform.OS === 'ios' ? PixelRatio.getPixelSizeForLayoutSize(20) : 0, paddingVertical: PixelRatio.getPixelSizeForLayoutSize(20) }}
                   carouselRef={this._pages}
                   tappableDots={!!this._pages}
                   dotStyle={{
