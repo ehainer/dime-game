@@ -40,7 +40,7 @@ class Entry extends React.Component {
   }
 
   onPress() {
-    this.props.onPress(this.props.type, this.props.title || 'Unknown', this.props.date, this.props.answers)
+    this.props.onPress(this.props.type, this.props.title || 'Untitled', this.props.date, this.props.answers)
   }
 
   render() {
@@ -48,7 +48,7 @@ class Entry extends React.Component {
       <TouchableHighlight onPress={this.onPress} activeOpacity={1} underlayColor="rgba(0, 0, 0, 0.2)">
         <View style={styles.entry}>
           <View style={styles.text}>
-            <Text style={styles.title}>{this.props.title || 'Unknown'}</Text>
+            <Text style={styles.title}>{this.props.title || 'Untitled'}</Text>
             <View style={styles.subtext}>
               <Text style={styles.type}>{this.getGameType()}</Text>
               <Text style={GlobalStyles.dot}>&middot;</Text>

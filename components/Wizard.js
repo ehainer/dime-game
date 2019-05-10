@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Dimensions,
   AsyncStorage,
-  StatusBar
+  StatusBar,
+  SafeAreaView
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -112,38 +113,40 @@ class Wizard extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
-        {this.state.layout && <Carousel
-          ref={(l) => { this._wizard = l }}
-          data={this.getSteps()}
-          scrollEnabled={true}
-          renderItem={this.getStep}
-          sliderHeight={this.state.layout.height}
-          itemHeight={this.state.layout.height}
-          sliderWidth={this.state.layout.width}
-          itemWidth={this.state.layout.width}
-          getItemLayout={this.getStepLayout}
-          keyboardShouldPersistTaps="handled"
-          onBeforeSnapToItem={(index) => this.setState({ index: index }) }
-        />}
-        {this._wizard && <Pagination
-          dotsLength={4}
-          activeDotIndex={this.state.index}
-          containerStyle={{ paddingVertical: 20 }}
-          carouselRef={this._wizard}
-          tappableDots={!!this._wizard}
-          scrolling
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: 'rgba(255, 255, 255, 0.92)'
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-        />}
-      </View>)
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
+          {this.state.layout && <Carousel
+            ref={(l) => { this._wizard = l }}
+            data={this.getSteps()}
+            scrollEnabled={true}
+            renderItem={this.getStep}
+            sliderHeight={this.state.layout.height}
+            itemHeight={this.state.layout.height}
+            sliderWidth={this.state.layout.width}
+            itemWidth={this.state.layout.width}
+            getItemLayout={this.getStepLayout}
+            keyboardShouldPersistTaps="handled"
+            onBeforeSnapToItem={(index) => this.setState({ index: index }) }
+          />}
+          {this._wizard && <Pagination
+            dotsLength={4}
+            activeDotIndex={this.state.index}
+            containerStyle={{ marginBottom: 20, paddingVertical: 20 }}
+            carouselRef={this._wizard}
+            tappableDots={!!this._wizard}
+            scrolling
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 8,
+              backgroundColor: 'rgba(255, 255, 255, 0.92)'
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />}
+        </View>
+      </SafeAreaView>)
   }
 }
 

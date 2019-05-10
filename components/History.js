@@ -48,8 +48,9 @@ class History extends React.Component {
     this.topSpace = (StatusBar.currentHeight || 0) + 5
     this.moveEntry = new Animated.ValueXY({ x: Layout.width, y: 0 })
     this.moveHistory = new Animated.ValueXY({ x: 0, y: 0 })
-
     this.moveClear = new Animated.ValueXY({ x: 0, y: 0 })
+
+    this.opacityEntry = new Animated.Value(0)
 
     this.getHistory = this.getHistory.bind(this)
     this.showEntry = this.showEntry.bind(this)
@@ -139,6 +140,12 @@ class History extends React.Component {
           duration: 250,
           easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
           useNativeDriver: true
+        }),
+        Animated.timing(this.opacityEntry, {
+          toValue: 1,
+          duration: 250,
+          easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
+          useNativeDriver: true
         })
       ]).start()
     })
@@ -158,6 +165,12 @@ class History extends React.Component {
       }),
       Animated.timing(this.moveEntry, {
         toValue: { x: Layout.width, y: 0 },
+        duration: 250,
+        easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
+        useNativeDriver: true
+      }),
+      Animated.timing(this.opacityEntry, {
+        toValue: 0,
         duration: 250,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true
@@ -219,8 +232,8 @@ class History extends React.Component {
             <Button backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
           </Animated.View>
         </Animated.View>
-        <Animated.View style={{ flex: 1, position: 'absolute', overflow: 'hidden', transform: this.moveEntry.getTranslateTransform() }}>
-          <View style={GlobalStyles.header} onLayout={(e) => this.setState({ headerLayout: e.nativeEvent.layout })}>
+        <Animated.View style={{ flex: 1, position: 'absolute', overflow: 'hidden', opacity: this.opacityEntry, transform: this.moveEntry.getTranslateTransform() }}>
+          <View style={{ ...GlobalStyles.header, borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, 0.1)' }} onLayout={(e) => this.setState({ headerLayout: e.nativeEvent.layout })}>
             <Svg width={23} height={30} style={{ position: 'absolute', left: 20, top: 20, zIndex: 999 }} onPress={this.hideEntry} viewBox="0 0 492 492">
               <G>
                 <G>
@@ -242,9 +255,7 @@ class History extends React.Component {
           </View>
           {this.state.headerLayout && this.state.footerLayout && <View style={{ height: Layout.height - this.state.headerLayout.height - this.state.footerLayout.height - Layout.space }}>
             <ScrollView contentContainerStyle={{
-              paddingHorizontal: 20,
-              borderTopWidth: 1,
-              borderTopColor: 'rgba(0, 0, 0, 0.1)'
+              paddingHorizontal: 20
             }}>
               {this.getQuestions().map((q, index) => {
                 return (<View key={q.category} style={styles.answer}>

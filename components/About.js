@@ -91,7 +91,7 @@ class About extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }} removeClippedSubviews={true}>
-        <View style={{ flex: 1 }} removeClippedSubviews={true}>
+        <View style={{ flex: 1, overflow: 'hidden' }} removeClippedSubviews={true}>
           <Animated.View style={{ flex: 1, overflow: 'hidden', transform: this.moveAbout.getTranslateTransform() }}>
             <View style={GlobalStyles.header}>
               <TouchableWithoutFeedback onPress={this.onTickThanks} onPressOut={this.onReleaseThanks} onLongPress={this.onClickThanks} delayLongPress={8000}>
