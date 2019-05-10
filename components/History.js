@@ -214,7 +214,7 @@ class History extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }} removeClippedSubviews={true}>
-        <Animated.View style={{ flex: 1, paddingBottom: 30, overflow: 'hidden', transform: this.moveHistory.getTranslateTransform() }}>
+        <Animated.View style={{ flex: 1, paddingBottom: this.props.layout ? this.props.layout.height : 0, overflow: 'hidden', transform: this.moveHistory.getTranslateTransform() }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>History</Text>
           </View>
@@ -229,7 +229,7 @@ class History extends React.Component {
             </View>}
             {this.getHistory()}
           </ScrollView>
-          <Animated.View style={{ ...styles.footer, alignItems: 'center', transform: this.moveClear.getTranslateTransform() }}>
+          <Animated.View style={{ ...styles.footer, alignItems: 'stretch', transform: this.moveClear.getTranslateTransform() }}>
             <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
           </Animated.View>
         </Animated.View>
@@ -254,7 +254,7 @@ class History extends React.Component {
               <Text style={GlobalStyles.caption}>{this.getDate()}</Text>
             </View>
           </View>
-          {this.state.headerLayout && this.state.middleLayout && this.state.footerLayout && <View style={{ height: this.state.middleLayout.height - this.state.headerLayout.height - this.state.footerLayout.height - Layout.space }}>
+          {this.state.headerLayout && this.state.middleLayout && this.state.footerLayout && <View style={{ height: this.state.middleLayout.height - this.state.headerLayout.height - this.state.footerLayout.height }}>
             <ScrollView contentContainerStyle={{
               paddingHorizontal: 20
             }}>
@@ -300,7 +300,8 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(0, 0, 0, 0.1)'
   },
   footer: {
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
     borderTopWidth: 1,
     borderTopColor: 'rgba(0, 0, 0, 0.1)'
   },
@@ -372,6 +373,7 @@ History.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
+  layout: state.Settings.layout,
   history: state.History.history,
   enableHistory: state.Settings.enableHistory
 })

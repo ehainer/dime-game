@@ -33,9 +33,9 @@ class MultilineInput extends React.Component {
 
   render() {
     return (
-      <View style={{ alignItems: 'flex-end' }}>
+      <View style={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
         <TextInput style={{ ...styles.input, height: this.state.height, width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} value={this.props.value} placeholder={this.props.placeholder} placeholderTextColor="#d3d3d3" maxLength={this.props.maxLength} multiline={true} onChangeText={this.onTextChange} onContentSizeChange={this.onContentChange} textAlignVertical="center"></TextInput>
-        {this.props.maxLength > -1 && <Text style={styles.count}>{this.props.title.length} / {this.props.maxLength}</Text>}
+        {this.props.maxLength > -1 && <Text style={{ ...styles.count, alignSelf: 'flex-end' }}>{this.props.title.length} / {this.props.maxLength}</Text>}
       </View>)
   }
 }

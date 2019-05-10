@@ -165,7 +165,7 @@ class Root extends React.Component {
                 itemWidth={width}
                 onBeforeSnapToItem={this.props.setPage}
               />
-              <Animated.View style={{ position: 'absolute', bottom: 0, width: Layout.width, transform: this.movePagination.getTranslateTransform() }}>
+              <Animated.View style={{ position: 'absolute', bottom: 0, width: Layout.width, transform: this.movePagination.getTranslateTransform() }} onLayout={this.props.setLayout}>
                 <Pagination
                   dotsLength={3}
                   activeDotIndex={this.props.page}

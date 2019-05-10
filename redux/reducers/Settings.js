@@ -11,6 +11,8 @@ export default function reducer(state = INITIAL_STATE, action) {
       return { ...state, view: action.payload }
     case 'SET_ENABLE_HISTORY':
       return { ...state, enableHistory: action.payload }
+    case 'SET_LAYOUT':
+      return { ...state, layout: action.payload }
     default:
       return state
   }
