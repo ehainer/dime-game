@@ -18,6 +18,7 @@ import Button from './Button'
 import Actions from '../redux/actions'
 
 import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 
 import debounce from 'debounce'
 
@@ -99,9 +100,11 @@ class About extends React.Component {
               </TouchableWithoutFeedback>
               <Text style={GlobalStyles.h2}>Figuring out how stongly to ask or say no</Text>
             </View>
-            <View style={{ marginVertical: 40, paddingHorizontal: 20 }}>
-              <Text style={GlobalStyles.text}>From Dialectical Behavorial Therapy, the "Dime Game" is a valuable skill that can be used to figure out how strongly to ask for something or how strongly to say no.</Text>
-              <Text style={{ ...GlobalStyles.text, marginTop: 20, }}>Check wise mind before acting, if some question categories are more important than others.</Text>
+            <View style={{ alignItems: 'center' }}>
+              <View style={{ marginVertical: 40, paddingHorizontal: 20, width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
+                <Text style={GlobalStyles.text}>From Dialectical Behavorial Therapy, the "Dime Game" is a valuable skill that can be used to figure out how strongly to ask for something or how strongly to say no.</Text>
+                <Text style={{ ...GlobalStyles.text, marginTop: 20, }}>Check wise mind before acting, if some question categories are more important than others.</Text>
+              </View>
             </View>
             <View style={{ alignItems: 'center' }}>
               <Button style={{ flex: -1 }} backgroundColor="lightseagreen" onPress={this.onClickNext} title="Start New Game" />

@@ -42,6 +42,7 @@ class History extends React.Component {
       date: '',
       open: false,
       headerLayout: null,
+      middleLayout: null,
       footerLayout: null
     }
 
@@ -228,11 +229,11 @@ class History extends React.Component {
             </View>}
             {this.getHistory()}
           </ScrollView>
-          <Animated.View style={{ ...styles.footer, transform: this.moveClear.getTranslateTransform() }}>
-            <Button backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
+          <Animated.View style={{ ...styles.footer, alignItems: 'center', transform: this.moveClear.getTranslateTransform() }}>
+            <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
           </Animated.View>
         </Animated.View>
-        <Animated.View style={{ flex: 1, position: 'absolute', overflow: 'hidden', opacity: this.opacityEntry, transform: this.moveEntry.getTranslateTransform() }}>
+        <Animated.View style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, overflow: 'hidden', opacity: this.opacityEntry, width: Layout.width, transform: this.moveEntry.getTranslateTransform() }} onLayout={(e) => this.setState({ middleLayout: e.nativeEvent.layout })}>
           <View style={{ ...GlobalStyles.header, borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, 0.1)' }} onLayout={(e) => this.setState({ headerLayout: e.nativeEvent.layout })}>
             <Svg width={23} height={30} style={{ position: 'absolute', left: 20, top: 20, zIndex: 999 }} onPress={this.hideEntry} viewBox="0 0 492 492">
               <G>
@@ -253,7 +254,7 @@ class History extends React.Component {
               <Text style={GlobalStyles.caption}>{this.getDate()}</Text>
             </View>
           </View>
-          {this.state.headerLayout && this.state.footerLayout && <View style={{ height: Layout.height - this.state.headerLayout.height - this.state.footerLayout.height - Layout.space }}>
+          {this.state.headerLayout && this.state.middleLayout && this.state.footerLayout && <View style={{ height: this.state.middleLayout.height - this.state.headerLayout.height - this.state.footerLayout.height - Layout.space }}>
             <ScrollView contentContainerStyle={{
               paddingHorizontal: 20
             }}>
@@ -266,7 +267,7 @@ class History extends React.Component {
               })}
             </ScrollView>
           </View>}
-          <View style={{ ...styles.resultWrapper }} onLayout={(e) => this.setState({ footerLayout: e.nativeEvent.layout })}>
+          <View style={{ ...styles.resultWrapper, position: 'absolute', bottom: 0, width: Layout.width }} onLayout={(e) => this.setState({ footerLayout: e.nativeEvent.layout })}>
             <View style={styles.labelWrapper}>
               <Text style={styles.label}>Solution</Text>
               <Text style={styles.label}>Intensity</Text>

@@ -9,7 +9,8 @@ import {
   AsyncStorage,
   StatusBar,
   SafeAreaView,
-  Platform
+  Platform,
+  PixelRatio
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -21,7 +22,7 @@ import Result from './Result'
 
 import Actions from '../redux/actions'
 
-const { width, height } = Dimensions.get('window')
+import Layout from '../resources/layout'
 
 class Wizard extends React.Component {
   constructor(props) {
@@ -109,7 +110,7 @@ class Wizard extends React.Component {
   }
 
   getStepLayout(data, index) {
-    return { length: width, offset: width * index, index }
+    return { length: Layout.width, offset: Layout.width * index, index }
   }
 
   render() {
@@ -132,7 +133,7 @@ class Wizard extends React.Component {
           {this._wizard && <Pagination
             dotsLength={4}
             activeDotIndex={this.state.index}
-            containerStyle={{ marginBottom: Platform.OS === 'ios' ? 20 : 0, paddingVertical: 20 }}
+            containerStyle={{ marginBottom: Platform.OS === 'ios' ? PixelRatio.getPixelSizeForLayoutSize(20) : 0, paddingVertical: 20 }}
             carouselRef={this._wizard}
             tappableDots={!!this._wizard}
             scrolling

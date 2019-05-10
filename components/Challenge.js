@@ -16,8 +16,7 @@ import Button from './Button'
 import Actions from '../redux/actions'
 
 import GlobalStyles from '../resources/styles'
-
-const { width } = Dimensions.get('window')
+import Layout from '../resources/layout'
 
 class Challenge extends React.Component {
   constructor(props) {
@@ -37,7 +36,7 @@ class Challenge extends React.Component {
   }
 
   getAskIcon() {
-    return (<Svg height={130} width={130} viewBox="0 0 512 512">
+    return (<Svg height={Math.min(Layout.width * 0.6, 300) * 0.51} width={Math.min(Layout.width * 0.6, 300) * 0.51} viewBox="0 0 512 512">
     <G>
       <G>
         <G>
@@ -67,7 +66,7 @@ class Challenge extends React.Component {
   }
 
   getSayNoIcon() {
-    return (<Svg height={120} width={120} viewBox="0 0 512 512" style={{ marginLeft: -12 }}>
+    return (<Svg height={Math.min(Layout.width * 0.6, 300) * 0.5} width={Math.min(Layout.width * 0.6, 300) * 0.5} viewBox="0 0 512 512" style={{ marginLeft: -Math.min(Layout.width * 0.6, 300) * 0.06 }}>
       <G>
         <G>
           <Path fill={this.getButtonColor('SAY_NO')} strokeWidth="8" d="M426.667,85.333c-7.76,0-15.052,2.083-21.333,5.729V64c0-23.531-19.135-42.667-42.667-42.667
@@ -113,9 +112,9 @@ class Challenge extends React.Component {
 
 const styles = StyleSheet.create({
   button: {
-    width: width * 0.6,
-    height: width * 0.6,
-    borderRadius: (width * 0.6) / 2
+    width: Math.min(Layout.width * 0.6, 300),
+    height: Math.min(Layout.width * 0.6, 300),
+    borderRadius: Math.min(Layout.width * 0.6, 300) / 2
   }
 })
 

@@ -12,7 +12,8 @@ import Button from './Button'
 
 import Actions from '../redux/actions'
 
-import GlobalStyles from '../resources/styles.js'
+import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 
 class Question extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Question extends React.Component {
             <Text style={{ ...styles.category }} onLayout={this.setLayout}>{this.props.category}</Text>
             {this.state.layout && <View style={{ width: this.state.layout.width + 20, height: 4, backgroundColor: 'lightseagreen', borderRadius: 2 }}></View>}
           </View>
-          <View style={styles.content}>
+          <View style={{ ...styles.content, width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
             <Text style={styles.question}>{this.props.question}</Text>
           </View>
           <View style={{ ...GlobalStyles.row, ...styles.buttons }}>

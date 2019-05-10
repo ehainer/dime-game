@@ -36,7 +36,7 @@ class Button extends React.Component {
 
   render() {
     return (
-      <View style={{ borderRadius: this.props.icon ? 0 : 25 }}>
+      <View style={{ borderRadius: this.props.icon ? 0 : 25, ...(this.props.customContainerStyle || {}) }}>
         {!this.props.icon && <TouchableHighlight style={{ ...styles.wrapper, backgroundColor: this.props.backgroundColor }} onPress={this.props.onPress} activeOpacity={0.8} underlayColor="lightseagreen">
           <View style={{ overflow: 'hidden', height: 50 }}>
             {this.props.checkable && <Animated.View style={{ transform: this.moveButton.getTranslateTransform() }}>

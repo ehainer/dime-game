@@ -14,6 +14,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import Button from './Button'
 
 import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 
 import Answers from '../resources/answers.json'
 
@@ -92,8 +93,8 @@ class Result extends React.Component {
               <Text style={styles.solution}>{this.getSolution()}</Text>
             </View>
           </View>
-          <View style={{ paddingHorizontal: 20 }}>
-            <Button backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
+          <View style={{ paddingHorizontal: 20, alignItems: 'center' }}>
+            <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
           </View>
         </View>
       </View>)

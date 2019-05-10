@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   Linking,
-  ScrollView
+  ScrollView,
+  PixelRatio
 } from 'react-native'
 
 import Svg, { G, Path } from 'react-native-svg'
@@ -200,7 +201,7 @@ class Credits extends React.Component {
               </View>
 
               <View style={styles.section}>
-                <View>
+                <View style={{ paddingBottom: PixelRatio.getPixelSizeForLayoutSize(20) }}>
                   <Text style={styles.sectionTitle}>Source</Text>
                   <Text style={{ ...GlobalStyles.caption, ...styles.sectionCaption }}>Feel free to fork, modify, criticize (constructively), or improve upon. Just keep it free.</Text>
                   <Text style={styles.library} onPress={() => this.onClickLink('https://github.com/ehainer/dime-game')}>View on GitHub</Text>

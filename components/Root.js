@@ -12,7 +12,8 @@ import {
   AsyncStorage,
   Easing,
   SafeAreaView,
-  Platform
+  Platform,
+  PixelRatio
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -160,11 +161,11 @@ class Root extends React.Component {
                 itemWidth={width}
                 onBeforeSnapToItem={this.props.setPage}
               />
-              <Animated.View style={{ position: 'absolute', width: width, bottom: -30, transform: this.movePagination.getTranslateTransform() }}>
+              <Animated.View style={{ position: 'absolute', width: width, bottom: -PixelRatio.getPixelSizeForLayoutSize(30), transform: this.movePagination.getTranslateTransform() }}>
                 <Pagination
                   dotsLength={3}
                   activeDotIndex={this.props.page}
-                  containerStyle={{ paddingVertical: 20 }}
+                  containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(20) }}
                   carouselRef={this._pages}
                   tappableDots={!!this._pages}
                   dotStyle={{
