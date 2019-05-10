@@ -18,12 +18,16 @@ class Question extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = { layout: null }
+
     this.onAnswerNo = this.onAnswerNo.bind(this)
     this.onAnswerYes = this.onAnswerYes.bind(this)
+    this.setLayout = this.setLayout.bind(this)
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     return nextProps.answers[this.props.index] !== this.props.answers[this.props.index]
+     || nextState.layout !== this.state.layout
   }
 
   onAnswerYes() {
@@ -34,12 +38,17 @@ class Question extends React.Component {
     this.props.onAnswer(this.props.index, 'NO')
   }
 
+  setLayout(event) {
+    this.setState({ layout: event.nativeEvent.layout })
+  }
+
   render() {
     return (
       <View style={styles.wrapper}>
         <View style={styles.box}>
           <View style={styles.categoryWrapper}>
-            <Text style={{ ...styles.category }}>{this.props.category}</Text>
+            <Text style={{ ...styles.category }} onLayout={this.setLayout}>{this.props.category}</Text>
+            {this.state.layout && <View style={{ width: this.state.layout.width + 20, height: 4, backgroundColor: 'lightseagreen', borderRadius: 2 }}></View>}
           </View>
           <View style={styles.content}>
             <Text style={styles.question}>{this.props.question}</Text>
@@ -69,18 +78,16 @@ const styles = StyleSheet.create({
     flex: -1
   },
   categoryWrapper: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 40
   },
   category: {
     fontSize: 30,
     lineHeight: 35,
     color: 'white',
     textAlign: 'center',
-    marginBottom: 40,
     padding: 10,
-    fontFamily: 'palanquin',
-    borderBottomWidth: 4,
-    borderBottomColor: 'lightseagreen'
+    fontFamily: 'palanquin'
   },
   content: {
     flex: -1,

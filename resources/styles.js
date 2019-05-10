@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, Dimensions, StatusBar, Platform } from 'react-native'
 
 const { width, height } = Dimensions.get('window')
 
@@ -24,7 +24,8 @@ module.exports = StyleSheet.create({
   },
   step: {
     flex: 1,
-    width: width
+    width: width,
+    height: height
   },
   frame: {
     flex: 1,

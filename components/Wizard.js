@@ -26,12 +26,14 @@ class Wizard extends React.Component {
     super(props)
 
     this.state = {
-      index: 0
+      index: 0,
+      layout: null
     }
 
     this.setStep = this.setStep.bind(this)
     this.getStep = this.getStep.bind(this)
     this.getSteps = this.getSteps.bind(this)
+    this.setLayout = this.setLayout.bind(this)
     this.onComplete = this.onComplete.bind(this)
   }
 
@@ -109,22 +111,27 @@ class Wizard extends React.Component {
     return { length: width, offset: width * index, index }
   }
 
+  setLayout(event) {
+    console.log('Layout', event.nativeEvent.layout)
+    this.setState({ layout: event.nativeEvent.layout })
+  }
+
   render() {
     return (
-      <View style={styles.wizard}>
-        <Carousel
+      <View style={{ ...styles.wizard }} onLayout={this.setLayout}>
+        {this.state.layout && <Carousel
           ref={(l) => { this._wizard = l }}
           data={this.getSteps()}
           scrollEnabled={true}
           renderItem={this.getStep}
-          sliderHeight={styles.panel.height}
-          itemHeight={styles.panel.height}
-          sliderWidth={styles.panel.width}
-          itemWidth={styles.panel.width}
+          sliderHeight={this.state.layout.height}
+          itemHeight={this.state.layout.height}
+          sliderWidth={this.state.layout.width}
+          itemWidth={this.state.layout.width}
           getItemLayout={this.getStepLayout}
           keyboardShouldPersistTaps="handled"
           onBeforeSnapToItem={(index) => this.setState({ index: index }) }
-        />
+        />}
         {this._wizard && <Pagination
           dotsLength={4}
           activeDotIndex={this.state.index}
@@ -152,13 +159,11 @@ Wizard.propTypes = {
 
 const styles = StyleSheet.create({
   wizard: {
-    width: width,
-    height: height - StatusBar.currentHeight,
-    marginTop: StatusBar.currentHeight
+    flex: 1
   },
   panel: {
     width: width,
-    height: height - StatusBar.currentHeight
+    height: height - (StatusBar.currentHeight || 0)
   }
 })
 

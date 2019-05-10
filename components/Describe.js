@@ -52,8 +52,8 @@ class Describe extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.step}>
-        <View style={GlobalStyles.frame}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20 }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>Describe Situation</Text>
             <Text style={GlobalStyles.caption}>In a few words, briefly describe what it is you're trying to decide how strongly to ask or say no to.</Text>

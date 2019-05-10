@@ -120,38 +120,40 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.page}>
-        <Animated.View style={{ ...GlobalStyles.page, marginTop: 0, paddingTop: 0, transform: this.moveMenu.getTranslateTransform() }}>
-          <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded }}>
-            <Text style={GlobalStyles.h1}>Menu</Text>
-          </View>
-          <View style={styles.list}>
-            <View style={{ ...styles.item, ...styles.clickable }}>
-              <View style={styles.text}>
-                <Text style={styles.title}>Enable History</Text>
-                <Text style={styles.subtitle}>Save the results of each dime game</Text>
+      <View style={GlobalStyles.page} removeClippedSubviews={true}>
+        <View style={{ overflow: 'hidden' }} removeClippedSubviews={true}>
+          <Animated.View style={{ ...GlobalStyles.page, marginTop: 0, paddingTop: 0, overflow: 'hidden', transform: this.moveMenu.getTranslateTransform() }}>
+            <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded }}>
+              <Text style={GlobalStyles.h1}>Menu</Text>
+            </View>
+            <View style={styles.list}>
+              <View style={{ ...styles.item, ...styles.clickable }}>
+                <View style={styles.text}>
+                  <Text style={styles.title}>Enable History</Text>
+                  <Text style={styles.subtitle}>Save the results of each dime game</Text>
+                </View>
+                <View style={styles.action}>
+                  <Switch value={this.props.enableHistory} trackColor="lightseagreen" onValueChange={this.onToggleHistory}></Switch>
+                </View>
               </View>
-              <View style={styles.action}>
-                <Switch value={this.props.enableHistory} onValueChange={this.onToggleHistory}></Switch>
+              <TouchableHighlight onPress={this.onClickCredits} style={{ ...styles.item, ...styles.clickable }} activeOpacity={1} underlayColor="rgba(0, 0, 0, 0.2)">
+                <View style={styles.text}>
+                  <Text style={styles.title}>Legal Information</Text>
+                  <Text style={styles.subtitle}>Credits & Attribution</Text>
+                </View>
+              </TouchableHighlight>
+              <View style={styles.item}>
+                <View style={styles.text}>
+                  <Text style={styles.title}>About</Text>
+                  <Text style={styles.subtitle}>Version {App.expo.version}</Text>
+                </View>
               </View>
             </View>
-            <TouchableHighlight onPress={this.onClickCredits} style={{ ...styles.item, ...styles.clickable }} activeOpacity={1} underlayColor="rgba(0, 0, 0, 0.2)">
-              <View style={styles.text}>
-                <Text style={styles.title}>Legal Information</Text>
-                <Text style={styles.subtitle}>Credits & Attribution</Text>
-              </View>
-            </TouchableHighlight>
-            <View style={styles.item}>
-              <View style={styles.text}>
-                <Text style={styles.title}>About</Text>
-                <Text style={styles.subtitle}>Version {App.expo.version}</Text>
-              </View>
-            </View>
-          </View>
-        </Animated.View>
-        <Animated.View style={{ ...styles.panel, ...styles.credits, transform: this.moveCredits.getTranslateTransform() }}>
-          <Credits />
-        </Animated.View>
+          </Animated.View>
+          <Animated.View style={{ ...styles.panel, ...styles.credits, overflow: 'hidden', transform: this.moveCredits.getTranslateTransform() }}>
+            <Credits />
+          </Animated.View>
+        </View>
       </View>)
   }
 }

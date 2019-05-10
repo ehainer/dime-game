@@ -93,8 +93,8 @@ class Challenge extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.step}>
-        <View style={GlobalStyles.frame}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20 }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>I Need Help With...</Text>
           </View>

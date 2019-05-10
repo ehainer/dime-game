@@ -1,7 +1,8 @@
 const INITIAL_STATE = {
   theme: {},
   themeIndex: 0,
-  enableHistory: true
+  enableHistory: true,
+  layout: null
 }
 
 export default function reducer(state = INITIAL_STATE, action) {

@@ -32,7 +32,7 @@ class MultilineInput extends React.Component {
   render() {
     return (
       <View style={styles.wrapper}>
-        <TextInput style={{ ...styles.input, height: this.state.height }} value={this.props.value} placeholder={this.props.placeholder} maxLength={this.props.maxLength} multiline={true} onChangeText={this.onTextChange} onContentSizeChange={this.onContentChange} textAlignVertical="center"></TextInput>
+        <TextInput style={{ ...styles.input, height: this.state.height }} value={this.props.value} placeholder={this.props.placeholder} placeholderTextColor="#d3d3d3" maxLength={this.props.maxLength} multiline={true} onChangeText={this.onTextChange} onContentSizeChange={this.onContentChange} textAlignVertical="center"></TextInput>
         {this.props.maxLength > -1 && <Text style={styles.count}>{this.props.title.length} / {this.props.maxLength}</Text>}
       </View>)
   }

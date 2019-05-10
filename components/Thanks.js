@@ -14,16 +14,27 @@ import GlobalStyles from '../resources/styles'
 class Thanks extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      layout: null
+    }
+
+    this.setLayout = this.setLayout.bind(this)
+  }
+
+  setLayout(event) {
+    this.setState({ layout: event.nativeEvent.layout })
   }
 
   render() {
     return (
-      <View style={GlobalStyles.page}>
-        <View style={{ ...GlobalStyles.padded, flex: 1, alignItems: 'center' }}>
-          <View style={{ ...GlobalStyles.flexSmall }}>
-            <Text style={styles.heading}>For Mallory & Belle</Text>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20, alignItems: 'center' }}>
+          <View style={styles.headingWrapper}>
+            <Text style={styles.heading} onLayout={this.setLayout}>For Mallory & Belle</Text>
+            {this.state.layout && <View style={{ position: 'absolute', bottom: 0, left: -10, width: this.state.layout.width + 20, height: 4, backgroundColor: 'lightseagreen', borderRadius: 2 }}></View>}
           </View>
-          <View style={GlobalStyles.padded}>
+          <View style={{ flex: 1, marginTop: 40 }}>
             <Text style={styles.paragraph}>Thank you for your constant patience, wisdom, and willingness to guide, especially on days when I feel like doing nothing else but throwing in the towel.</Text>
             <Text style={styles.paragraph}>Everything you've done has changed, and continues to change my life, and since I'll never find exactly the right words to express how much that has meant to me, hopefully this app helps.</Text>
             <Text style={styles.thanks}>Thank You</Text>
@@ -35,14 +46,15 @@ class Thanks extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  headingWrapper: {
+    paddingTop: 60
+  },
   heading: {
     color: 'white',
     fontSize: 30,
+    lineHeight: 35,
     fontFamily: 'palanquin',
-    textAlign: 'center',
-    marginBottom: 40,
-    borderBottomWidth: 4,
-    borderBottomColor: 'lightseagreen'
+    textAlign: 'center'
   },
   paragraph: {
     color: 'white',

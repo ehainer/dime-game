@@ -10,7 +10,8 @@ import {
   StatusBar,
   BackHandler,
   AsyncStorage,
-  Easing
+  Easing,
+  SafeAreaView
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -108,7 +109,7 @@ class Root extends React.Component {
   
     if(prevProps.isFullScreen !== this.props.isFullScreen){
       Animated.timing(this.movePagination, {
-        toValue: { x: 0, y: this.props.isFullScreen ? 0 : -30 },
+        toValue: { x: 0, y: this.props.isFullScreen ? 50 : -30 },
         duration: 200,
         useNativeDriver: true
       }).start()
@@ -140,45 +141,47 @@ class Root extends React.Component {
       <View style={styles.container}>
         <LinearGradient colors={['#234051', '#323a45']} style={GlobalStyles.background} />
         {this.props.isLoaded && 
-        <Animated.View style={{ opacity: this.opacityContainer }}>
-          <Animated.View style={{ transform: this.moveHome.getTranslateTransform() }}>
-            <Carousel
-              ref={c => this._pages = c }
-              data={this.getPages()}
-              activeAnimationType="decay"
-              renderItem={this.getPage}
-              firstItem={1}
-              keyboardShouldPersistTaps="handled"
-              scrollEnabled={this.props.isScrollEnabled}
-              sliderHeight={height}
-              itemHeight={height}
-              sliderWidth={width}
-              itemWidth={width}
-              onBeforeSnapToItem={this.props.setPage}
-            />
-            <Animated.View style={{ position: 'absolute', width: width, bottom: -30, transform: this.movePagination.getTranslateTransform() }}>
-              <Pagination
-                dotsLength={3}
-                activeDotIndex={this.props.page}
-                containerStyle={{ paddingVertical: 20 }}
-                carouselRef={this._pages}
-                tappableDots={!!this._pages}
-                dotStyle={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: 5,
-                  marginHorizontal: 8,
-                  backgroundColor: 'rgba(255, 255, 255, 0.92)'
-                }}
-                inactiveDotOpacity={0.4}
-                inactiveDotScale={0.6}
+        <SafeAreaView>
+          <Animated.View style={{ flex: 1, opacity: this.opacityContainer }}>
+            <Animated.View style={{ width: width, transform: this.moveHome.getTranslateTransform() }}>
+              <Carousel
+                ref={c => this._pages = c }
+                data={this.getPages()}
+                activeAnimationType="decay"
+                renderItem={this.getPage}
+                firstItem={1}
+                keyboardShouldPersistTaps="handled"
+                scrollEnabled={this.props.isScrollEnabled}
+                sliderHeight={height}
+                itemHeight={height}
+                sliderWidth={width}
+                itemWidth={width}
+                onBeforeSnapToItem={this.props.setPage}
               />
+              <Animated.View style={{ position: 'absolute', width: width, bottom: -30, transform: this.movePagination.getTranslateTransform() }}>
+                <Pagination
+                  dotsLength={3}
+                  activeDotIndex={this.props.page}
+                  containerStyle={{ paddingVertical: 20 }}
+                  carouselRef={this._pages}
+                  tappableDots={!!this._pages}
+                  dotStyle={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    marginHorizontal: 8,
+                    backgroundColor: 'rgba(255, 255, 255, 0.92)'
+                  }}
+                  inactiveDotOpacity={0.4}
+                  inactiveDotScale={0.6}
+                />
+              </Animated.View>
+            </Animated.View>
+            <Animated.View style={{ ...styles.wizard, transform: this.moveWizard.getTranslateTransform() }}>
+              <Wizard />
             </Animated.View>
           </Animated.View>
-          <Animated.View style={{ ...styles.wizard, transform: this.moveWizard.getTranslateTransform() }}>
-            <Wizard />
-          </Animated.View>
-        </Animated.View>}
+        </SafeAreaView>}
       </View>)
   }
 }
@@ -186,14 +189,14 @@ class Root extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#323a45',
     alignItems: 'center',
     justifyContent: 'center'
   },
   wizard: {
     position: 'absolute',
-    width: width,
-    height: height - (StatusBar.currentHeight || 0)
+    height: '100%',
+    width: width
   }
 })
 
@@ -207,7 +210,8 @@ const mapStateToProps = (state) => ({
   isInThanks: state.States.isInThanks,
   isFullScreen: state.States.isFullScreen,
   isScrollEnabled: state.States.isScrollEnabled,
-  enableHistory: state.Settings.enableHistory
+  enableHistory: state.Settings.enableHistory,
+  layout: state.Settings.layout
 })
 
 const mapDispatchToProps = {
@@ -220,7 +224,8 @@ const mapDispatchToProps = {
   setEnableHistory: Actions.setEnableHistory,
   setIsInThanks: Actions.setIsInThanks,
   setIsInMenu: Actions.setIsInMenu,
-  setHistory: Actions.setHistory
+  setHistory: Actions.setHistory,
+  setLayout: Actions.setLayout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root)

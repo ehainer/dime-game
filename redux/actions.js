@@ -1,4 +1,10 @@
 export default {
+  setLayout: (event) => {
+    return (dispatch) => {
+      dispatch({ type: 'SET_LAYOUT', payload: event.nativeEvent.layout })
+      return Promise.resolve()
+    }
+  },
   setPage: (page) => {
     return (dispatch) => {
       dispatch({ type: 'SET_PAGE', payload: page })

@@ -229,8 +229,8 @@ class History extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.page}>
-        <Animated.View style={{ ...GlobalStyles.page, marginTop: 0, paddingTop: 0, transform: this.moveHistory.getTranslateTransform() }}>
+      <View style={{ flex: 1 }}>
+        <Animated.View style={{ flex: 1, paddingBottom: 30, transform: this.moveHistory.getTranslateTransform() }}>
           <View style={{ ...GlobalStyles.header, ...GlobalStyles.padded }}>
             <Text style={GlobalStyles.h1}>History</Text>
           </View>
@@ -287,9 +287,8 @@ class History extends React.Component {
 const styles = StyleSheet.create({
   entry: {
     position: 'absolute',
-    width: width,
-    height: height - (StatusBar.currentHeight || 0),
-    zIndex: 99
+    height: '100%',
+    width: width
   },
   history: {
     paddingBottom: 30,

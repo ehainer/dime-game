@@ -69,8 +69,8 @@ class Questions extends React.Component {
 
   render() {
     return (
-      <View style={GlobalStyles.step}>
-        <View style={GlobalStyles.frame}>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 20 }}>
           <View style={GlobalStyles.header}>
             <Text style={GlobalStyles.h1}>{this.getTitle()}</Text>
             {this.props.title.trim() !== '' && <Text style={GlobalStyles.caption}>"{this.props.title.trim()}"</Text>}
