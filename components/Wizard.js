@@ -5,14 +5,8 @@ import PropTypes from 'prop-types'
 import {
   View,
   StyleSheet,
-  Dimensions,
   AsyncStorage,
-  StatusBar,
-  SafeAreaView,
-  Platform,
-  PixelRatio,
-  TouchableOpacity,
-  Animated
+  SafeAreaView
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -46,10 +40,6 @@ class Wizard extends React.Component {
     this.setState({ index: this.props.step })
   }
 
-  shouldComponentUpdate() {
-    return true
-  }
-
   componentDidUpdate(prevProps) {
     if(prevProps.step !== this.props.step){
       this.setState({ index: this.props.step })
@@ -58,6 +48,10 @@ class Wizard extends React.Component {
           this._wizard.snapToItem(this.props.step)
         })
       }
+    }
+
+    if(this._wizard){
+      this._wizard.triggerRenderingHack()
     }
   }
 
@@ -128,7 +122,7 @@ class Wizard extends React.Component {
             keyboardShouldPersistTaps="handled"
             onBeforeSnapToItem={this.props.setGameStep}
           />}
-          {this._wizard && <View style={{ position: 'absolute', bottom: 0, width: Layout.width }}>
+          {this._wizard && <View style={{ position: 'absolute', bottom: 0, width: Layout.width }} onLayout={this.props.setBottomLayout}>
           <Pagination
             dotsLength={4}
             activeDotIndex={this.state.index}
@@ -168,7 +162,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   resetGame: Actions.resetGame,
   setHistory: Actions.setHistory,
-  setGameStep: Actions.setGameStep
+  setGameStep: Actions.setGameStep,
+  setBottomLayout: Actions.setBottomLayout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wizard)

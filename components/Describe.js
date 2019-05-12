@@ -29,6 +29,11 @@ class Describe extends React.Component {
     this.onBack = this.onBack.bind(this)
   }
 
+  shouldComponentUpdate(nextProps) {
+    return nextProps.title !== this.props.title
+     || nextProps.step !== this.props.step
+  }
+
   getPlaceholder() {
     const options = [
       'Friend asked me to move...',

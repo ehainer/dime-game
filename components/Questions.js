@@ -64,7 +64,7 @@ class Questions extends React.Component {
       this.setState({ index: -1 })
     }
 
-    if(prevProps.step !== this.props.step || prevProps.answers.length !== this.props.answers.length){
+    if(prevProps.answers.length !== this.props.answers.length){
       let options = this.props.type ? Options[this.props.type] : []
       this.setState({
         allQuestions: options,
@@ -109,7 +109,30 @@ class Questions extends React.Component {
             <Text style={GlobalStyles.h1}>{this.getTitle()}</Text>
             {this.props.title.trim() !== '' && <Text style={GlobalStyles.caption}>"{this.props.title.trim()}"</Text>}
           </View>
-          <View style={{ flex: 1, alignItems: 'stretch', paddingHorizontal: 20, marginBottom: PixelRatio.getPixelSizeForLayoutSize(30) }} onLayout={this.setQuestionsLayout}>
+          <View style={{ flex: -1, height: 30 }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              {this.state.carousel && <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Pagination
+                  dotsLength={this.state.allQuestions.length}
+                  activeDotIndex={Math.max(this.state.index, 0)}
+                  containerStyle={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  carouselRef={this.state.carousel}
+                  tappableDots={true}
+                  renderDots={(activeIndex) => {
+                    const length = this.state.questions.length - 1
+                    return this.state.allQuestions.map((q, idx) => {
+                      return (<Dot key={idx} active={activeIndex === idx} enabled={idx <= length} onPress={() => this.state.carousel.snapToItem(this.state.carousel._getPositionIndex(idx))} />)
+                    })
+                  }}
+                />
+              </View>}
+            </View>
+          </View>
+          <View style={{ flex: 1, alignItems: 'stretch', paddingHorizontal: 20, marginBottom: this.props.bottomLayout.height }} onLayout={this.setQuestionsLayout}>
             {this.state.layout && this.state.layout.height && <Carousel
               ref={(c) => {
                 if(!this.state.carousel){
@@ -152,26 +175,6 @@ class Questions extends React.Component {
                 }
               }}
             />}
-            {this.state.carousel && <View style={{ position: 'absolute', top: -40, left: 0, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Pagination
-                dotsLength={this.state.allQuestions.length}
-                containerStyle={{ flex: 1 }}
-                activeDotIndex={Math.max(this.state.index, 0)}
-                containerStyle={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-                carouselRef={this.state.carousel}
-                tappableDots={true}
-                renderDots={(activeIndex) => {
-                  const length = this.state.questions.length - 1
-                  return this.state.allQuestions.map((q, idx) => {
-                    return (<Dot key={idx} active={activeIndex === idx} enabled={idx <= length} onPress={() => this.state.carousel.snapToItem(this.state.carousel._getPositionIndex(idx))} />)
-                  })
-                }}
-              />
-            </View>}
           </View>
         </View>
       </View>)
@@ -185,7 +188,8 @@ const mapStateToProps = (state) => ({
   step: state.Game.step,
   type: state.Game.type,
   title: state.Game.title,
-  answers: state.Game.answers
+  answers: state.Game.answers,
+  bottomLayout: state.Settings.bottomLayout
 })
 
 const mapDispatchToProps = {

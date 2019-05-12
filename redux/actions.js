@@ -5,6 +5,12 @@ export default {
       return Promise.resolve()
     }
   },
+  setBottomLayout: (event) => {
+    return (dispatch) => {
+      dispatch({ type: 'SET_BOTTOM_LAYOUT', payload: event.nativeEvent.layout })
+      return Promise.resolve()
+    }
+  },
   setPage: (page) => {
     return (dispatch) => {
       dispatch({ type: 'SET_PAGE', payload: page })
@@ -49,8 +55,10 @@ export default {
   },
   setGameTitle: (title) => ({ type: 'SET_GAME_TITLE', payload: title }),
   setGameType: (type) => {
-    return (dispatch) => {
-      dispatch({ type: 'SET_ANSWERS', payload: [] })
+    return (dispatch, getState) => {
+      if(getState().Game.type !== type){
+        dispatch({ type: 'SET_ANSWERS', payload: [] })
+      }
       dispatch({ type: 'SET_GAME_TYPE', payload: type })
       return Promise.resolve()
     }

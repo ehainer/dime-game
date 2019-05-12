@@ -2,7 +2,10 @@ const INITIAL_STATE = {
   theme: {},
   themeIndex: 0,
   enableHistory: true,
-  layout: null
+  layout: null,
+  bottomLayout: {
+    height: 0
+  }
 }
 
 export default function reducer(state = INITIAL_STATE, action) {
@@ -13,6 +16,8 @@ export default function reducer(state = INITIAL_STATE, action) {
       return { ...state, enableHistory: action.payload }
     case 'SET_LAYOUT':
       return { ...state, layout: action.payload }
+    case 'SET_BOTTOM_LAYOUT':
+      return { ...state, bottomLayout: action.payload }
     default:
       return state
   }
