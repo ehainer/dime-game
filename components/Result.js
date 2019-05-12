@@ -96,7 +96,7 @@ class Result extends React.Component {
           </View>
           <View style={{ flex: -1, alignItems: 'center' }}>
             <View style={{ paddingHorizontal: 20, alignItems: 'stretch', paddingBottom: PixelRatio.getPixelSizeForLayoutSize(30) }}>
-              <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
+              <Button customContainerStyle={{ minWidth: Layout.minWidth, maxWidth: Layout.maxWidth }} backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
             </View>
           </View>
         </View>

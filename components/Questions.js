@@ -90,9 +90,13 @@ class Questions extends React.Component {
       if(index === Options['ASK'].length - 1){
         this.props.onNext()
       }else{
-        requestAnimationFrame(() => {
-          this.state.carousel.snapToNext()
-        })
+        setTimeout(() => {
+          if(this.state.carousel){
+            requestAnimationFrame(() => {
+              this.state.carousel.snapToNext()
+            })
+          }
+        }, 1)
       }
     })
   }
@@ -111,7 +115,7 @@ class Questions extends React.Component {
           </View>
           <View style={{ flex: -1, height: 30 }}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              {this.state.carousel && <View style={{ flex: -1, alignItems: 'center', justifyContent: 'center', width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
+              {this.state.carousel && <View style={{ flex: -1, alignItems: 'center', justifyContent: 'center', minWidth: Layout.minWidth, maxWidth: Layout.maxWidth }}>
                 <Pagination
                   dotsLength={this.state.allQuestions.length}
                   activeDotIndex={Math.max(this.state.index, 0)}

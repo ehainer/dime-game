@@ -44,7 +44,6 @@ class Question extends React.Component {
   }
 
   render() {
-    console.log(Layout)
     return (
       <View style={styles.wrapper}>
         <View style={styles.box}>
@@ -71,7 +70,8 @@ class Question extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : '100%',
+    minWidth: Math.min(Layout.defaultWidth, Layout.maxWidth),
+    maxWidth: Layout.maxWidth,
     paddingHorizontal: 10
   },
   box: {
@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
   content: {
     flex: -1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    minHeight: 100
   },
   question: {
     fontSize: 20,

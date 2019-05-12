@@ -101,7 +101,7 @@ class About extends React.Component {
               <Text style={GlobalStyles.h2}>Figuring out how stongly to ask or say no</Text>
             </View>
             <View style={{ alignItems: 'center' }}>
-              <View style={{ marginVertical: 40, paddingHorizontal: 20, width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
+              <View style={{ marginVertical: 40, minWidth: Layout.minWidth, maxWidth: Layout.maxWidth }}>
                 <Text style={GlobalStyles.text}>From Dialectical Behavorial Therapy, the "Dime Game" is a valuable skill that can be used to figure out how strongly to ask for something or how strongly to say no.</Text>
                 <Text style={{ ...GlobalStyles.text, marginTop: 20, }}>Check wise mind before acting, if some question categories are more important than others.</Text>
               </View>
@@ -110,7 +110,7 @@ class About extends React.Component {
               <Button style={{ flex: -1 }} backgroundColor="lightseagreen" onPress={this.onClickNext} title="Start New Game" />
             </View>
           </Animated.View>
-          <Animated.View style={{ flex: 1, position: 'absolute', overflow: 'hidden', transform: this.moveThanks.getTranslateTransform() }}>
+          <Animated.View style={{ position: 'absolute', flex: 1, width: Layout.width, height: Layout.height, alignItems: 'center', justifyContent: 'stretch', overflow: 'hidden', transform: this.moveThanks.getTranslateTransform() }}>
             <Thanks />
           </Animated.View>
         </View>

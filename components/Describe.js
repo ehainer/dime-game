@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   Keyboard,
-  TouchableOpacity
+  TouchableOpacity,
+  PixelRatio
 } from 'react-native'
 
 import Svg, { G, Path } from 'react-native-svg'
@@ -65,7 +66,7 @@ class Describe extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: 'stretch' }}>
           <View style={GlobalStyles.header}>
             <TouchableOpacity style={{ position: 'absolute', left: 10, top: 10, padding: 10, zIndex: 999 }} onPress={this.onBack} activeOpacity={1}>
               <Svg style={{ padding: 10 }} width={23} height={30} viewBox="0 0 492 492">
@@ -84,7 +85,7 @@ class Describe extends React.Component {
             <Text style={GlobalStyles.h1}>     Describe Situation</Text>
             <Text style={GlobalStyles.caption}>In a few words, briefly describe what it is you're trying to decide how strongly to ask or say no to.</Text>
           </View>
-          <View style={{ flex: -1, marginVertical: 30, paddingHorizontal: 20, alignItems: 'stretch', width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
+          <View style={{ flex: -1, marginVertical: 30, paddingHorizontal: 20, alignItems: 'center' }}>
             <MultilineInput ref={(i) => { this._input = i }} value={this.props.title} placeholder={this.state.placeholder} maxLength={100} onChange={this.props.setGameTitle}></MultilineInput>
           </View>
           <View style={{ alignItems: 'center' }}>

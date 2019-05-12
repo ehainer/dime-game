@@ -6,6 +6,6 @@ export default {
   height: height,
   space: StatusBar.currentHeight || 0,
   ratio: PixelRatio.get(),
-  maxWidth: 550,
-  defaultWidth: 450
+  minWidth: Math.min(450, Math.min(550, width - 40)),
+  maxWidth: Math.min(550, width - 40)
 }
