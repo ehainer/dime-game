@@ -229,9 +229,11 @@ class History extends React.Component {
             </View>}
             {this.getHistory()}
           </ScrollView>
-          <Animated.View style={{ ...styles.footer, alignItems: 'stretch', transform: this.moveClear.getTranslateTransform() }}>
-            <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
-          </Animated.View>
+          <View style={{ flex: -1, alignItems: 'center' }}>
+            <Animated.View style={{ ...styles.footer, alignItems: 'stretch', transform: this.moveClear.getTranslateTransform() }}>
+              <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onClearHistory} title="Clear History" />
+            </Animated.View>
+          </View>
         </Animated.View>
         <Animated.View style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, overflow: 'hidden', opacity: this.opacityEntry, width: Layout.width, transform: this.moveEntry.getTranslateTransform() }} onLayout={(e) => this.setState({ middleLayout: e.nativeEvent.layout })}>
           <View style={{ ...GlobalStyles.header, borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, 0.1)' }} onLayout={(e) => this.setState({ headerLayout: e.nativeEvent.layout })}>

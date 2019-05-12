@@ -94,8 +94,10 @@ class Result extends React.Component {
               <Text style={styles.solution}>{this.getSolution()}</Text>
             </View>
           </View>
-          <View style={{ paddingHorizontal: 20, alignItems: 'stretch', paddingBottom: PixelRatio.getPixelSizeForLayoutSize(30) }}>
-            <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
+          <View style={{ flex: -1, alignItems: 'center' }}>
+            <View style={{ paddingHorizontal: 20, alignItems: 'stretch', paddingBottom: PixelRatio.getPixelSizeForLayoutSize(30) }}>
+              <Button customContainerStyle={{ width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }} backgroundColor="lightseagreen" onPress={this.onComplete} title="Done" />
+            </View>
           </View>
         </View>
       </View>)

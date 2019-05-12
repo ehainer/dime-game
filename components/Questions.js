@@ -111,12 +111,12 @@ class Questions extends React.Component {
           </View>
           <View style={{ flex: -1, height: 30 }}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              {this.state.carousel && <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              {this.state.carousel && <View style={{ flex: -1, alignItems: 'center', justifyContent: 'center', width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
                 <Pagination
                   dotsLength={this.state.allQuestions.length}
                   activeDotIndex={Math.max(this.state.index, 0)}
                   containerStyle={{
-                    flex: 1,
+                    flex: -1,
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}
@@ -132,7 +132,7 @@ class Questions extends React.Component {
               </View>}
             </View>
           </View>
-          <View style={{ flex: 1, alignItems: 'stretch', paddingHorizontal: 20, marginBottom: this.props.bottomLayout.height }} onLayout={this.setQuestionsLayout}>
+          <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 20, marginBottom: this.props.bottomLayout.height }} onLayout={this.setQuestionsLayout}>
             {this.state.layout && this.state.layout.height && <Carousel
               ref={(c) => {
                 if(!this.state.carousel){

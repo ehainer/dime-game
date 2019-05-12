@@ -17,6 +17,7 @@ import Button from './Button'
 import Actions from '../redux/actions'
 
 import GlobalStyles from '../resources/styles'
+import Layout from '../resources/layout'
 
 class Describe extends React.Component {
   constructor(props) {
@@ -83,7 +84,7 @@ class Describe extends React.Component {
             <Text style={GlobalStyles.h1}>     Describe Situation</Text>
             <Text style={GlobalStyles.caption}>In a few words, briefly describe what it is you're trying to decide how strongly to ask or say no to.</Text>
           </View>
-          <View style={{ marginVertical: 30, paddingHorizontal: 20, alignItems: 'stretch' }}>
+          <View style={{ flex: -1, marginVertical: 30, paddingHorizontal: 20, alignItems: 'stretch', width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
             <MultilineInput ref={(i) => { this._input = i }} value={this.props.title} placeholder={this.state.placeholder} maxLength={100} onChange={this.props.setGameTitle}></MultilineInput>
           </View>
           <View style={{ alignItems: 'center' }}>

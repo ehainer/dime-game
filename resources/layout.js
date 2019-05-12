@@ -6,6 +6,6 @@ export default {
   height: height,
   space: StatusBar.currentHeight || 0,
   ratio: PixelRatio.get(),
-  maxWidth: PixelRatio.getPixelSizeForLayoutSize(550),
-  defaultWidth: PixelRatio.getPixelSizeForLayoutSize(450)
+  maxWidth: 550,
+  defaultWidth: 450
 }

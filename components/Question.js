@@ -44,6 +44,7 @@ class Question extends React.Component {
   }
 
   render() {
+    console.log(Layout)
     return (
       <View style={styles.wrapper}>
         <View style={styles.box}>
@@ -51,7 +52,7 @@ class Question extends React.Component {
             <Text style={{ ...styles.category }} onLayout={this.setLayout}>{this.props.category}</Text>
             {this.state.layout && <View style={{ width: this.state.layout.width + 20, height: 4, backgroundColor: 'lightseagreen', borderRadius: 2 }}></View>}
           </View>
-          <View style={{ ...styles.content, width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : null }}>
+          <View style={{ ...styles.content }}>
             <Text style={styles.question}>{this.props.question}</Text>
           </View>
           <View style={{ ...GlobalStyles.row, ...styles.buttons }}>
@@ -70,9 +71,7 @@ class Question extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: Layout.width > Layout.maxWidth ? Layout.defaultWidth : '100%',
     paddingHorizontal: 10
   },
   box: {
@@ -93,8 +92,7 @@ const styles = StyleSheet.create({
   content: {
     flex: -1,
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 80
+    justifyContent: 'center'
   },
   question: {
     fontSize: 20,
