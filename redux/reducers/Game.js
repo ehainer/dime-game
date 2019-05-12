@@ -3,7 +3,7 @@ import update from 'immutability-helper'
 const INITIAL_STATE = {
   title: '',
   type: null,
-  step: 0,
+  step: -1,
   questions: [],
   answers: [],
   index: 0

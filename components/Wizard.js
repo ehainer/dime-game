@@ -10,7 +10,9 @@ import {
   StatusBar,
   SafeAreaView,
   Platform,
-  PixelRatio
+  PixelRatio,
+  TouchableOpacity,
+  Animated
 } from 'react-native'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel'
@@ -19,6 +21,7 @@ import Challenge from './Challenge'
 import Questions from './Questions'
 import Describe from './Describe'
 import Result from './Result'
+import Dot from './Dot'
 
 import Actions from '../redux/actions'
 
@@ -29,32 +32,32 @@ class Wizard extends React.Component {
     super(props)
 
     this.state = {
-      index: 0,
+      index: -1,
       layout: null
     }
 
-    this.setStep = this.setStep.bind(this)
     this.getStep = this.getStep.bind(this)
     this.getSteps = this.getSteps.bind(this)
     this.onComplete = this.onComplete.bind(this)
+    this.getMaxStep = this.getMaxStep.bind(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.index !== this.state.index
-    || nextProps.step !== this.props.step
-    || nextProps.type !== this.props.type
-    || nextProps.isInGame !== this.props.isInGame
-    || nextProps.isGameStarted !== this.props.isGameStarted
-    || nextProps.answers.length !== this.props.answers.length
+  componentDidMount() {
+    this.setState({ index: this.props.step })
+  }
+
+  shouldComponentUpdate() {
+    return true
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.step !== this.props.step){
-      this.setStep(this.props.step)
-    }
-
-    if(this._wizard){
-      this._wizard.triggerRenderingHack()
+      this.setState({ index: this.props.step })
+      if(this._wizard){
+        requestAnimationFrame(() => {
+          this._wizard.snapToItem(this.props.step)
+        })
+      }
     }
   }
 
@@ -74,39 +77,34 @@ class Wizard extends React.Component {
       this.props.setHistory(history)
     }
 
-    this.props.resetGame().then(() => {
-      this.props.setIsInGame(false)
-    })
+    this.props.resetGame()
   }
 
-  setStep(step) {
-    this.setState({ index: step })
-
-    requestAnimationFrame(() => {
-      if(this._wizard){
-        this._wizard.snapToItem(step)
-      }
-    })
-  }
-
-  getSteps() {
-    const allowed = [
+  getMaxStep() {
+    return [
       true,
       this.props.isGameDescribed,
       ['ASK', 'SAY_NO'].includes(this.props.type),
       this.props.answers.length === 10
     ].filter(a => a).length
+  }
 
+  getSteps() {
     return [
       { key: 'describe' },
       { key: 'challenge' },
       { key: 'questions' },
       { key: 'result' }
-    ].slice(0, allowed)
+    ].slice(0, this.getMaxStep())
   }
 
   getStep({ index }) {
-    return [(<Describe />), (<Challenge />), (<Questions />), (<Result onComplete={this.onComplete} />)][index]
+    return [
+      (<Describe onNext={() => this.props.setGameStep(1)} />),
+      (<Challenge onNext={() => this.props.setGameStep(2)} />),
+      (<Questions onNext={() => this.props.setGameStep(3)} />),
+      (<Result onComplete={this.onComplete} />)
+    ][index]
   }
 
   getStepLayout(data, index) {
@@ -116,7 +114,7 @@ class Wizard extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
           {this.state.layout && <Carousel
             ref={(l) => { this._wizard = l }}
             data={this.getSteps()}
@@ -128,25 +126,21 @@ class Wizard extends React.Component {
             itemWidth={this.state.layout.width}
             getItemLayout={this.getStepLayout}
             keyboardShouldPersistTaps="handled"
-            onBeforeSnapToItem={(index) => this.setState({ index: index }) }
+            onBeforeSnapToItem={this.props.setGameStep}
           />}
           {this._wizard && <View style={{ position: 'absolute', bottom: 0, width: Layout.width }}>
           <Pagination
             dotsLength={4}
             activeDotIndex={this.state.index}
-            containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(10) }}
+            containerStyle={{ flex: -1, alignItems: 'center', justifyContent: 'center', paddingVertical: 15 }}
             carouselRef={this._wizard}
-            tappableDots={!!this._wizard}
-            scrolling
-            dotStyle={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              marginHorizontal: 8,
-              backgroundColor: 'rgba(255, 255, 255, 0.92)'
+            tappableDots={true}
+            renderDots={(activeIndex) => {
+              const length = this.getMaxStep() - 1
+              return ['describe', 'challenge', 'questions', 'result'].map((q, idx) => {
+                return (<Dot key={idx} active={activeIndex === idx} enabled={idx <= length} onPress={() => this._wizard.snapToItem(this._wizard._getPositionIndex(idx))} />)
+              })
             }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
           />
           </View>}
         </View>
@@ -163,7 +157,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   isInGame: state.States.isInGame,
-  isGameStarted: state.States.isGameStarted,
   isGameDescribed: state.States.isGameDescribed,
   step: state.Game.step,
   type: state.Game.type,
@@ -174,8 +167,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   resetGame: Actions.resetGame,
-  setIsInGame: Actions.setIsInGame,
-  setHistory: Actions.setHistory
+  setHistory: Actions.setHistory,
+  setGameStep: Actions.setGameStep
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wizard)

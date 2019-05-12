@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Linking,
   ScrollView,
-  PixelRatio
+  PixelRatio,
+  TouchableOpacity
 } from 'react-native'
 
 import Svg, { G, Path } from 'react-native-svg'
@@ -35,18 +36,20 @@ class Credits extends React.Component {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <View style={GlobalStyles.header} onLayout={(e) => this.setState({ layout: e.nativeEvent.layout })}>
-            <Svg width={23} height={30} style={{ position: 'absolute', left: 20, top: 20, zIndex: 999 }} onPress={this.props.onBack} viewBox="0 0 492 492">
-              <G>
+            <TouchableOpacity style={{ position: 'absolute', left: 10, top: 10, padding: 10, zIndex: 999 }} onPress={this.props.onBack} activeOpacity={1}>
+              <Svg style={{ padding: 10 }} width={23} height={30} viewBox="0 0 492 492">
                 <G>
-                  <Path fill="white" d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124
-                    c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844
-                    L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412
-                    c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008
-                    c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788
-                    C492,219.198,479.172,207.418,464.344,207.418z"/>
+                  <G>
+                    <Path fill="white" d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124
+                      c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844
+                      L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412
+                      c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008
+                      c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788
+                      C492,219.198,479.172,207.418,464.344,207.418z"/>
+                  </G>
                 </G>
-              </G>
-            </Svg>
+              </Svg>
+            </TouchableOpacity>
             <Text style={GlobalStyles.h1}>     Legal Information</Text>
           </View>
           {this.state.layout && <View style={{ height: Layout.height - this.state.layout.height }}>
@@ -185,8 +188,7 @@ class Credits extends React.Component {
                 <View>
                   <Text style={styles.sectionTitle}>Privacy Policy</Text>
                   <Text style={{ ...styles.text, marginBottom: 10 }}>Your data never leaves this device. Period.</Text>
-                  <Text style={{ ...styles.text, marginBottom: 10 }}>There is no server involved at any point, and if you disable the dime game history, none of your data will ever exist on this device either. We also have no access to anything on your device, including the camera, SMS messages, files, or anything else.</Text>
-                  <Text style={styles.text}>If Ted Danson asked us today to see your data, there would be nothing to show him.</Text>
+                  <Text style={{ ...styles.text }}>There is no server involved at any point, and if you disable the dime game history, none of your data will ever exist on this device either.</Text>
                 </View>
               </View>
 

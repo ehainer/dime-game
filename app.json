@@ -10,11 +10,9 @@
     ],
     "version": "0.1.2",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/background.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#323a45"
+      "backgroundColor": "#234051"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -30,7 +28,12 @@
       "package": "com.minow.dbt.dime",
       "permissions": [],
       "versionCode": 2,
-      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.minow.dbt.dime"
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.minow.dbt.dime",
+      "adaptiveIcon": {
+        "backgroundColor": "#234051",
+        "backgroundImage": "./assets/background.png",
+        "foregroundImage": "./assets/foreground.png"
+      }
     }
   }
 }

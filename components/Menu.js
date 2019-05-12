@@ -23,8 +23,7 @@ import { connect } from 'react-redux'
 
 import App from '../app.json'
 import GlobalStyles from '../resources/styles'
-
-const { width, height } = Dimensions.get('window')
+import Layout from '../resources/layout'
 
 class Menu extends React.Component {
   constructor(props) {
@@ -39,7 +38,7 @@ class Menu extends React.Component {
     }
 
     this.topSpace = (StatusBar.currentHeight || 0)
-    this.moveCredits = new Animated.ValueXY({ x: width, y: 0 })
+    this.moveCredits = new Animated.ValueXY({ x: Layout.width, y: 0 })
     this.moveMenu = new Animated.ValueXY({ x: 0, y: 0 })
 
     this.onToggleHistory = this.onToggleHistory.bind(this)
@@ -100,13 +99,13 @@ class Menu extends React.Component {
   onToggleCredits() {
     Animated.parallel([
       Animated.timing(this.moveMenu, {
-        toValue: { x: this.state.showCredits ? -width : 0, y: 0 },
+        toValue: { x: this.state.showCredits ? -Layout.width : 0, y: 0 },
         duration: 250,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true
       }),
       Animated.timing(this.moveCredits, {
-        toValue: { x: this.state.showCredits ? 0 : width, y: 0 },
+        toValue: { x: this.state.showCredits ? 0 : Layout.width, y: 0 },
         duration: 250,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true
@@ -159,11 +158,6 @@ Menu.propTypes = {
 }
 
 const styles = StyleSheet.create({
-  panel: {
-    position: 'absolute',
-    width: width,
-    height: height - (StatusBar.currentHeight || 0)
-  },
   list: {
     borderTopWidth: 1,
     borderTopColor: 'rgba(0, 0, 0, 0.1)'

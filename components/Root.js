@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LinearGradient, Font, SplashScreen } from 'expo'
+import { Font, SplashScreen } from 'expo'
 
 import {
   View,
@@ -20,10 +20,11 @@ import Carousel, { Pagination } from 'react-native-snap-carousel'
 
 import { connect } from 'react-redux'
 
-import Menu from '../components/Menu'
-import About from '../components/About'
-import Wizard from '../components/Wizard'
-import History from '../components/History'
+import Dot from './Dot'
+import Menu from './Menu'
+import About from './About'
+import Wizard from './Wizard'
+import History from './History'
 
 import Actions from '../redux/actions'
 
@@ -65,11 +66,9 @@ class Root extends React.Component {
     })
 
     BackHandler.addEventListener('hardwareBackPress', () => {
-      if(this.props.step >= 0 && this.props.isInGame && !this.props.isInHistory){
+      if(this.props.step >= 0 && this.props.isInGame){
         if(this.props.step === 0){
-          this.props.setIsInGame(false)
-          this.props.setGameStarted(false)
-          this.props.setGameDescribed(false)
+          this.props.resetGame()
         }
         this.props.setGameStep(Math.max(this.props.step - 1, 0))
         return true
@@ -146,7 +145,6 @@ class Root extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <LinearGradient colors={['#234051', '#323a45']} style={GlobalStyles.background} />
         {this.props.isLoaded && 
         <SafeAreaView>
           <Animated.View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : (StatusBar.currentHeight || 0), opacity: this.opacityContainer }}>
@@ -163,24 +161,22 @@ class Root extends React.Component {
                 itemHeight={height}
                 sliderWidth={width}
                 itemWidth={width}
+                activeAnimationType="decay"
                 onBeforeSnapToItem={this.props.setPage}
+                slideInterpolatedStyle={() => {}}
               />
               <Animated.View style={{ position: 'absolute', bottom: 0, width: Layout.width, transform: this.movePagination.getTranslateTransform() }} onLayout={this.props.setLayout}>
                 <Pagination
                   dotsLength={3}
                   activeDotIndex={this.props.page}
-                  containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(10) }}
+                  containerStyle={{ paddingVertical: PixelRatio.getPixelSizeForLayoutSize(5) }}
                   carouselRef={this._pages}
                   tappableDots={!!this._pages}
-                  dotStyle={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    marginHorizontal: 8,
-                    backgroundColor: 'rgba(255, 255, 255, 0.92)'
+                  renderDots={(activeIndex) => {
+                    return ['menu', 'about', 'history'].map((q, idx) => {
+                      return (<Dot key={idx} active={activeIndex === idx} enabled={true} onPress={() => this._pages.snapToItem(this._pages._getPositionIndex(idx))} />)
+                    })
                   }}
-                  inactiveDotOpacity={0.4}
-                  inactiveDotScale={0.6}
                 />
               </Animated.View>
             </Animated.View>
@@ -196,9 +192,9 @@ class Root extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#323a45',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#234051'
   },
   wizard: {
     position: 'absolute',
@@ -223,11 +219,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   setPage: Actions.setPage,
+  resetGame: Actions.resetGame,
   setIsLoaded: Actions.setIsLoaded,
-  setIsInGame: Actions.setIsInGame,
   setGameStep: Actions.setGameStep,
-  setGameStarted: Actions.setGameStarted,
-  setGameDescribed: Actions.setGameDescribed,
   setEnableHistory: Actions.setEnableHistory,
   setIsInThanks: Actions.setIsInThanks,
   setIsInMenu: Actions.setIsInMenu,

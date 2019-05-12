@@ -27,8 +27,9 @@ class Challenge extends React.Component {
   }
   
   setGameType(type) {
-    this.props.setGameType(type)
-    this.props.setGameStep(2)
+    this.props.setGameType(type).then(() => {
+      this.props.onNext()
+    })
   }
 
   getButtonColor(type) {

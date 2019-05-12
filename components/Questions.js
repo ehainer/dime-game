@@ -8,7 +8,9 @@ import {
   PixelRatio
 } from 'react-native'
 
-import Carousel from 'react-native-snap-carousel'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
+
+import Dot from './Dot'
 
 import Question from './Question.js'
 
@@ -23,23 +25,56 @@ class Questions extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { layout: null }
+    this.state = {
+      carousel: null,
+      layout: null,
+      index: -1,
+      allQuestions: [],
+      questions: []
+    }
 
-    this.getQuestions = this.getQuestions.bind(this)
     this.getQuestion = this.getQuestion.bind(this)
     this.setAnswer = this.setAnswer.bind(this)
     this.getTitle = this.getTitle.bind(this)
     this.setQuestionsLayout = this.setQuestionsLayout.bind(this)
   }
 
-  getTitle() {
-    return this.props.type === 'ASK'
-     ? 'Asking'
-     : 'Saying No'
+  shouldComponentUpdate(prevProps, prevState) {
+    let update = prevState.allQuestions !== this.state.allQuestions
+     || prevState.questions.length !== this.state.questions.length
+     || prevState.index !== this.state.index
+     || prevState.carousel !== this.state.carousel
+     || prevState.layout !== this.state.layout
+     || prevProps.answers.length !== this.props.answers.length
+     || prevProps.step !== this.props.step
+    return update
   }
 
-  getQuestions() {
-    return this.props.type ? Options[this.props.type].slice(0, this.props.answers.length + 1) : []
+  componentDidMount() {
+    let options = this.props.type ? Options[this.props.type] : []
+    this.setState({
+      index: 0,
+      allQuestions: options,
+      questions: options.slice(0, this.props.answers.length + 1)
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.type !== this.props.type){
+      this.setState({ index: -1 })
+    }
+
+    if(prevProps.step !== this.props.step || prevProps.answers.length !== this.props.answers.length){
+      let options = this.props.type ? Options[this.props.type] : []
+      this.setState({
+        allQuestions: options,
+        questions: options.slice(0, this.props.answers.length + 1)
+      })
+    }
+  }
+
+  getTitle() {
+    return this.props.type === 'ASK' ? 'Asking' : 'Saying No'
   }
 
   getQuestion({ item, index }) {
@@ -53,10 +88,10 @@ class Questions extends React.Component {
   setAnswer(index, answer) {
     this.props.setAnswer(index, answer).then(() => {
       if(index === Options['ASK'].length - 1){
-        this.props.setGameStep(3)
+        this.props.onNext()
       }else{
         requestAnimationFrame(() => {
-          this._carousel.snapToNext()
+          this.state.carousel.snapToNext()
         })
       }
     })
@@ -74,19 +109,69 @@ class Questions extends React.Component {
             <Text style={GlobalStyles.h1}>{this.getTitle()}</Text>
             {this.props.title.trim() !== '' && <Text style={GlobalStyles.caption}>"{this.props.title.trim()}"</Text>}
           </View>
-          <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: PixelRatio.getPixelSizeForLayoutSize(30) }} onLayout={this.setQuestionsLayout}>
+          <View style={{ flex: 1, alignItems: 'stretch', paddingHorizontal: 20, marginBottom: PixelRatio.getPixelSizeForLayoutSize(30) }} onLayout={this.setQuestionsLayout}>
             {this.state.layout && this.state.layout.height && <Carousel
-              ref={(c) => { this._carousel = c }}
+              ref={(c) => {
+                if(!this.state.carousel){
+                  this.setState({ carousel: c })
+                }
+              }}
               activeAnimationType="decay"
               vertical={true}
-              data={this.getQuestions()}
+              data={this.state.questions}
               renderItem={this.getQuestion}
+              firstItem={0}
               sliderHeight={this.state.layout.height}
-              itemHeight={this.state.layout.height}
+              itemHeight={this.state.layout.height / 2}
               sliderWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
               itemWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
               keyExtractor={this.keyExtractor}
+              onBeforeSnapToItem={(idx) => this.setState({ index: idx })}
+              slideInterpolatedStyle={(index, animatedValue, carouselProps) => {
+                return {
+                  opacity: animatedValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 1],
+                    extrapolate: 'clamp'
+                  }),
+                  transform: [
+                    {
+                      scale: animatedValue.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.3, 1],
+                        extrapolate: 'clamp'
+                      }),
+                      rotateX: animatedValue.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0],
+                        extrapolate: 'clamp'
+                      }),
+                      perspective: 1000
+                    }
+                  ]
+                }
+              }}
             />}
+            {this.state.carousel && <View style={{ position: 'absolute', top: -40, left: 0, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <Pagination
+                dotsLength={this.state.allQuestions.length}
+                containerStyle={{ flex: 1 }}
+                activeDotIndex={Math.max(this.state.index, 0)}
+                containerStyle={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                carouselRef={this.state.carousel}
+                tappableDots={true}
+                renderDots={(activeIndex) => {
+                  const length = this.state.questions.length - 1
+                  return this.state.allQuestions.map((q, idx) => {
+                    return (<Dot key={idx} active={activeIndex === idx} enabled={idx <= length} onPress={() => this.state.carousel.snapToItem(this.state.carousel._getPositionIndex(idx))} />)
+                  })
+                }}
+              />
+            </View>}
           </View>
         </View>
       </View>)

@@ -55,15 +55,7 @@ export default {
       return Promise.resolve()
     }
   },
-  setGameStep: (step, change) => {
-    return (dispatch) => {
-      if(change !== false){
-        dispatch({ type: 'SET_CHANGE_PAGE', payload: true })
-      }
-      dispatch({ type: 'SET_GAME_STEP', payload: step })
-      return Promise.resolve()
-    }
-  },
+  setGameStep: (step) => ({ type: 'SET_GAME_STEP', payload: step }),
   setAnswer: (index, value) => {
     return (dispatch) => {
       dispatch({ type: 'SET_ANSWER', payload: { index: index, value: value } })
@@ -79,11 +71,12 @@ export default {
   resetGame: () => {
     return (dispatch) => {
       dispatch({ type: 'SET_ANSWERS', payload: [] })
-      dispatch({ type: 'SET_GAME_STEP', payload: -1 })
       dispatch({ type: 'SET_GAME_TYPE', payload: null })
       dispatch({ type: 'SET_GAME_TITLE', payload: '' })
       dispatch({ type: 'SET_GAME_STARTED', payload: false })
       dispatch({ type: 'SET_GAME_DESCRIBED', payload: false })
+      dispatch({ type: 'SET_GAME_STEP', payload: -1 })
+      dispatch({ type: 'SET_IS_IN_GAME', payload: false })
       return Promise.resolve()
     }
   },
