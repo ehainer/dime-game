@@ -28,11 +28,11 @@ class Questions extends React.Component {
     this.state = {
       carousel: null,
       layout: null,
-      index: -1,
-      allQuestions: [],
-      questions: []
+      index: -1
     }
 
+    this.getAllQuestions = this.getAllQuestions.bind(this)
+    this.getQuestions = this.getQuestions.bind(this)
     this.getQuestion = this.getQuestion.bind(this)
     this.setAnswer = this.setAnswer.bind(this)
     this.getTitle = this.getTitle.bind(this)
@@ -40,41 +40,34 @@ class Questions extends React.Component {
   }
 
   shouldComponentUpdate(prevProps, prevState) {
-    let update = prevState.allQuestions !== this.state.allQuestions
-     || prevState.questions.length !== this.state.questions.length
-     || prevState.index !== this.state.index
+    return prevState.index !== this.state.index
      || prevState.carousel !== this.state.carousel
      || prevState.layout !== this.state.layout
      || prevProps.answers.length !== this.props.answers.length
      || prevProps.step !== this.props.step
-    return update
   }
 
   componentDidMount() {
     let options = this.props.type ? Options[this.props.type] : []
-    this.setState({
-      index: 0,
-      allQuestions: options,
-      questions: options.slice(0, this.props.answers.length + 1)
-    })
+    this.setState({ index: 0 })
   }
 
   componentDidUpdate(prevProps) {
     if(prevProps.type !== this.props.type){
       this.setState({ index: -1 })
     }
-
-    if(prevProps.answers.length !== this.props.answers.length){
-      let options = this.props.type ? Options[this.props.type] : []
-      this.setState({
-        allQuestions: options,
-        questions: options.slice(0, this.props.answers.length + 1)
-      })
-    }
   }
 
   getTitle() {
     return this.props.type === 'ASK' ? 'Asking' : 'Saying No'
+  }
+
+  getAllQuestions() {
+    return this.props.type ? Options[this.props.type] : []
+  }
+
+  getQuestions() {
+    return this.getAllQuestions().slice(0, this.props.answers.length + 1)
   }
 
   getQuestion({ item, index }) {
@@ -117,7 +110,7 @@ class Questions extends React.Component {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
               {this.state.carousel && <View style={{ flex: -1, alignItems: 'center', justifyContent: 'center', minWidth: Layout.minWidth, maxWidth: Layout.maxWidth }}>
                 <Pagination
-                  dotsLength={this.state.allQuestions.length}
+                  dotsLength={this.getAllQuestions().length}
                   activeDotIndex={Math.max(this.state.index, 0)}
                   containerStyle={{
                     flex: -1,
@@ -127,8 +120,8 @@ class Questions extends React.Component {
                   carouselRef={this.state.carousel}
                   tappableDots={true}
                   renderDots={(activeIndex) => {
-                    const length = this.state.questions.length - 1
-                    return this.state.allQuestions.map((q, idx) => {
+                    const length = this.getQuestions().length - 1
+                    return this.getAllQuestions().map((q, idx) => {
                       return (<Dot key={idx} active={activeIndex === idx} enabled={idx <= length} onPress={() => this.state.carousel.snapToItem(this.state.carousel._getPositionIndex(idx))} />)
                     })
                   }}
@@ -145,7 +138,7 @@ class Questions extends React.Component {
               }}
               activeAnimationType="decay"
               vertical={true}
-              data={this.state.questions}
+              data={this.getQuestions()}
               renderItem={this.getQuestion}
               firstItem={0}
               sliderHeight={this.state.layout.height}

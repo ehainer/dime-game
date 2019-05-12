@@ -187,8 +187,7 @@ class Credits extends React.Component {
               <View style={styles.section}>
                 <View>
                   <Text style={styles.sectionTitle}>Privacy Policy</Text>
-                  <Text style={{ ...styles.text, marginBottom: 10 }}>Your data never leaves this device. Period.</Text>
-                  <Text style={{ ...styles.text }}>There is no server involved at any point, and if you disable the dime game history, none of your data will ever exist on this device either.</Text>
+                  <Text style={{ ...styles.library, marginBottom: 10 }} onPress={() => this.onClickLink('https://www.minow.io/dbt/dime-game/privacy-policy.html')}>View Privacy Policy</Text>
                 </View>
               </View>
 
