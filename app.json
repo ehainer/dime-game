@@ -10,7 +10,7 @@
     ],
     "version": "0.1.2",
     "orientation": "portrait",
-    "icon": "./assets/background.png",
+    "icon": "./assets/icon.png",
     "splash": {
       "backgroundColor": "#234051"
     },
@@ -22,7 +22,10 @@
     ],
     "ios": {
       "bundleIdentifier": "com.minow.dbt.dime",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "backgroundColor": "#234051"
+      }
     },
     "android": {
       "package": "com.minow.dbt.dime",

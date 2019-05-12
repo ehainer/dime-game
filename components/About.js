@@ -110,7 +110,7 @@ class About extends React.Component {
               <Button style={{ flex: -1 }} backgroundColor="lightseagreen" onPress={this.onClickNext} title="Start New Game" />
             </View>
           </Animated.View>
-          <Animated.View style={{ position: 'absolute', flex: 1, width: Layout.width, height: Layout.height, alignItems: 'center', justifyContent: 'stretch', overflow: 'hidden', transform: this.moveThanks.getTranslateTransform() }}>
+          <Animated.View style={{ position: 'absolute', flex: 1, width: Layout.width, height: Layout.height, alignItems: 'center', overflow: 'hidden', transform: this.moveThanks.getTranslateTransform() }}>
             <Thanks />
           </Animated.View>
         </View>
