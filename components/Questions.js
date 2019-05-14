@@ -28,11 +28,11 @@ class Questions extends React.Component {
     this.state = {
       carousel: null,
       layout: null,
-      index: -1
+      index: -1,
+      allQuestions: [],
+      questions: []
     }
 
-    this.getAllQuestions = this.getAllQuestions.bind(this)
-    this.getQuestions = this.getQuestions.bind(this)
     this.getQuestion = this.getQuestion.bind(this)
     this.setAnswer = this.setAnswer.bind(this)
     this.getTitle = this.getTitle.bind(this)
@@ -43,31 +43,48 @@ class Questions extends React.Component {
     return prevState.index !== this.state.index
      || prevState.carousel !== this.state.carousel
      || prevState.layout !== this.state.layout
-     || prevProps.answers.length !== this.props.answers.length
+     || prevState.questions !== this.state.questions
+     || prevProps.answers.join('') !== this.props.answers.join('')
      || prevProps.step !== this.props.step
+     || prevProps.type !== this.props.type
   }
 
   componentDidMount() {
-    let options = this.props.type ? Options[this.props.type] : []
-    this.setState({ index: 0 })
+    let options = Options[this.props.type] || []
+    this.setState({
+      index: 0,
+      allQuestions: options,
+      questions: options.slice(0, this.props.answers.length + 1)
+    })
   }
 
-  componentDidUpdate(prevProps) {
-    if(prevProps.type !== this.props.type){
-      this.setState({ index: -1 })
+  componentDidUpdate(prevProps, prevState) {
+    const answersChanged = prevProps.answers.join('') !== this.props.answers.join('')
+    const typeChanged = prevProps.type !== this.props.type
+    if(typeChanged || answersChanged){
+      let newState = {}
+      
+      if(typeChanged){
+        newState['index'] = -1
+        newState['allQuestions'] = Options[this.props.type] || []
+      }
+      
+      if(answersChanged){
+        newState['questions'] = (newState['allQuestions'] || this.state.allQuestions).slice(0, this.props.answers.length + 1)
+      }
+
+      this.setState(newState)
+    }
+    
+    if(prevState.questions !== this.state.questions && this.state.carousel){
+      requestAnimationFrame(() => {
+        this.state.carousel.snapToNext()
+      })
     }
   }
 
   getTitle() {
     return this.props.type === 'ASK' ? 'Asking' : 'Saying No'
-  }
-
-  getAllQuestions() {
-    return this.props.type ? Options[this.props.type] : []
-  }
-
-  getQuestions() {
-    return this.getAllQuestions().slice(0, this.props.answers.length + 1)
   }
 
   getQuestion({ item, index }) {
@@ -82,14 +99,6 @@ class Questions extends React.Component {
     this.props.setAnswer(index, answer).then(() => {
       if(index === Options['ASK'].length - 1){
         this.props.onNext()
-      }else{
-        setTimeout(() => {
-          if(this.state.carousel){
-            requestAnimationFrame(() => {
-              this.state.carousel.snapToNext()
-            })
-          }
-        }, 1)
       }
     })
   }
@@ -110,7 +119,7 @@ class Questions extends React.Component {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
               {this.state.carousel && <View style={{ flex: -1, alignItems: 'center', justifyContent: 'center', minWidth: Layout.minWidth, maxWidth: Layout.maxWidth }}>
                 <Pagination
-                  dotsLength={this.getAllQuestions().length}
+                  dotsLength={this.state.allQuestions.length}
                   activeDotIndex={Math.max(this.state.index, 0)}
                   containerStyle={{
                     flex: -1,
@@ -120,8 +129,8 @@ class Questions extends React.Component {
                   carouselRef={this.state.carousel}
                   tappableDots={true}
                   renderDots={(activeIndex) => {
-                    const length = this.getQuestions().length - 1
-                    return this.getAllQuestions().map((q, idx) => {
+                    const length = this.state.questions.length - 1
+                    return this.state.allQuestions.map((q, idx) => {
                       return (<Dot key={idx} active={activeIndex === idx} enabled={idx <= length} onPress={() => this.state.carousel.snapToItem(this.state.carousel._getPositionIndex(idx))} />)
                     })
                   }}
@@ -138,7 +147,7 @@ class Questions extends React.Component {
               }}
               activeAnimationType="decay"
               vertical={true}
-              data={this.getQuestions()}
+              data={this.state.questions}
               renderItem={this.getQuestion}
               firstItem={0}
               sliderHeight={this.state.layout.height}
