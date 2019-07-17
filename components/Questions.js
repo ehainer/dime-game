@@ -41,7 +41,7 @@ class Questions extends React.Component {
 
   shouldComponentUpdate(prevProps, prevState) {
     return prevState.index !== this.state.index
-     || prevState.carousel !== this.state.carousel
+     || (prevState.carousel === null && this.state.carousel !== null)
      || prevState.layout !== this.state.layout
      || prevState.questions !== this.state.questions
      || prevProps.answers.join('') !== this.props.answers.join('')
@@ -75,12 +75,6 @@ class Questions extends React.Component {
 
       this.setState(newState)
     }
-    
-    if(prevState.questions !== this.state.questions && this.state.carousel){
-      requestAnimationFrame(() => {
-        this.state.carousel.snapToNext()
-      })
-    }
   }
 
   getTitle() {
@@ -99,6 +93,10 @@ class Questions extends React.Component {
     this.props.setAnswer(index, answer).then(() => {
       if(index === Options['ASK'].length - 1){
         this.props.onNext()
+      }else{
+        requestAnimationFrame(() => {
+          this.state.carousel.snapToNext()
+        })
       }
     })
   }
@@ -143,6 +141,9 @@ class Questions extends React.Component {
               ref={(c) => {
                 if(!this.state.carousel){
                   this.setState({ carousel: c })
+                  requestAnimationFrame(() => {
+                    this.forceUpdate()
+                  })
                 }
               }}
               activeAnimationType="decay"
@@ -156,6 +157,11 @@ class Questions extends React.Component {
               itemWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
               keyExtractor={this.keyExtractor}
               onBeforeSnapToItem={(idx) => this.setState({ index: idx })}
+              removeClippedSubviews={true}
+              initialNumToRender={1}
+              maxToRenderPerBatch={3}
+              updateCellsBatchingPeriod={300}
+              windowSize={10}
               slideInterpolatedStyle={(index, animatedValue, carouselProps) => {
                 return {
                   opacity: animatedValue.interpolate({

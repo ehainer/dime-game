@@ -120,6 +120,11 @@ class Wizard extends React.Component {
             itemWidth={this.state.layout.width}
             getItemLayout={this.getStepLayout}
             keyboardShouldPersistTaps="handled"
+            removeClippedSubviews={true}
+            initialNumToRender={1}
+            maxToRenderPerBatch={3}
+            updateCellsBatchingPeriod={200}
+            windowSize={3}
             onBeforeSnapToItem={this.props.setGameStep}
           />}
           {this._wizard && <View style={{ position: 'absolute', bottom: 0, width: Layout.width }} onLayout={this.props.setBottomLayout}>

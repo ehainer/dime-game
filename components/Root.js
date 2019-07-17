@@ -163,6 +163,11 @@ class Root extends React.Component {
                 itemWidth={width}
                 activeAnimationType="decay"
                 onBeforeSnapToItem={this.props.setPage}
+                removeClippedSubviews={true}
+                initialNumToRender={3}
+                maxToRenderPerBatch={3}
+                updateCellsBatchingPeriod={50}
+                windowSize={3}
                 slideInterpolatedStyle={() => {}}
               />
               <Animated.View style={{ position: 'absolute', bottom: 0, width: Layout.width, transform: this.movePagination.getTranslateTransform() }} onLayout={this.props.setLayout}>

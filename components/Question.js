@@ -28,7 +28,7 @@ class Question extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.answers[this.props.index] !== this.props.answers[this.props.index]
-     || nextState.layout !== this.state.layout
+    || nextState.layout !== this.state.layout
   }
 
   onAnswerYes() {
@@ -47,14 +47,15 @@ class Question extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.box}>
-          <View style={styles.categoryWrapper}>
+          <View style={{ ...styles.categoryWrapper }}>
             <Text style={{ ...styles.category }} onLayout={this.setLayout}>{this.props.category}</Text>
             {this.state.layout && <View style={{ width: this.state.layout.width + 20, height: 4, backgroundColor: 'lightseagreen', borderRadius: 2 }}></View>}
           </View>
           <View style={{ ...styles.content }}>
             <Text style={styles.question}>{this.props.question}</Text>
           </View>
-          <View style={{ ...GlobalStyles.row, ...styles.buttons }}>
+          <View style={{ ...styles.spacer }}></View>
+          <View style={{ ...GlobalStyles.row }}>
             <View style={{ flex: 1 }}>
               <Button checkable={true} checked={this.props.answer === 'YES'} backgroundColor="lightseagreen" onPress={this.onAnswerYes} title="YES" />
             </View>
@@ -92,8 +93,7 @@ const styles = StyleSheet.create({
   content: {
     flex: -1,
     alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 100
+    justifyContent: 'center'
   },
   question: {
     fontSize: 20,
@@ -113,6 +113,9 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 40
+  },
+  spacer: {
+    height: 30
   }
 })
 

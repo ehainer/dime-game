@@ -44,7 +44,7 @@ class Dot extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity style={{ flex: -1, alignItems: 'center', justifyContent: 'center', padding: PixelRatio.getPixelSizeForLayoutSize(5) }} onPress={this.props.onPress} activeOpacity={1}>
+      <TouchableOpacity style={{ flex: -1, alignItems: 'center', justifyContent: 'center', paddingVertical: PixelRatio.getPixelSizeForLayoutSize(5), paddingHorizontal: PixelRatio.getPixelSizeForLayoutSize(3) }} onPress={this.props.onPress} activeOpacity={1}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Animated.View style={{
             borderWidth: 2,
