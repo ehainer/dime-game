@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { Font, SplashScreen } from 'expo'
+import { SplashScreen } from 'expo'
+
+import * as Font from 'expo-font'
 
 import {
   View,

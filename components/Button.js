@@ -37,7 +37,7 @@ class Button extends React.Component {
   render() {
     return (
       <View style={{ borderRadius: this.props.icon ? 0 : 25, ...(this.props.customContainerStyle || {}) }}>
-        {!this.props.icon && <TouchableHighlight style={{ ...styles.wrapper, backgroundColor: this.props.backgroundColor }} onPress={this.props.onPress} activeOpacity={0.8} underlayColor="lightseagreen">
+        {!this.props.icon && <TouchableHighlight hitSlop={{top: 5, bottom: 5, left: 3, right: 3}} style={{ ...styles.wrapper, backgroundColor: this.props.backgroundColor }} onPress={this.props.onPress} activeOpacity={0.8} underlayColor="lightseagreen">
           <View style={{ overflow: 'hidden', height: 50 }}>
             {this.props.checkable && <Animated.View style={{ transform: this.moveButton.getTranslateTransform() }}>
               <Text style={styles.label}>{this.props.title.toUpperCase()}</Text>
@@ -53,7 +53,7 @@ class Button extends React.Component {
           </View>
         </TouchableHighlight>}
         {this.props.icon && <View style={this.props.style}>
-          <TouchableHighlight onPress={this.props.onPress} activeOpacity={1} underlayColor="rgba(0, 0, 0, 0)">
+          <TouchableHighlight hitSlop={{top: 5, bottom: 5, left: 3, right: 3}} onPress={this.props.onPress} activeOpacity={1} underlayColor="rgba(0, 0, 0, 0)">
             <View style={{ ...styles.icon, ...this.props.style, borderColor: this.props.backgroundColor }}>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 {this.props.icon}

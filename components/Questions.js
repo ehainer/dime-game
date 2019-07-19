@@ -29,6 +29,8 @@ class Questions extends React.Component {
       carousel: null,
       layout: null,
       index: -1,
+      type: null,
+      answers: [],
       allQuestions: [],
       questions: []
     }
@@ -40,41 +42,34 @@ class Questions extends React.Component {
   }
 
   shouldComponentUpdate(prevProps, prevState) {
-    return prevState.index !== this.state.index
-     || (prevState.carousel === null && this.state.carousel !== null)
-     || prevState.layout !== this.state.layout
-     || prevState.questions !== this.state.questions
-     || prevProps.answers.join('') !== this.props.answers.join('')
-     || prevProps.step !== this.props.step
-     || prevProps.type !== this.props.type
+    return (prevState.carousel === null && this.state.carousel !== null)
+        || prevState.index !== this.state.index
+        || prevState.layout !== this.state.layout
+        || prevState.answers.join('') !== this.state.answers.join('')
+        || prevProps.step !== this.props.step
+        || prevProps.type !== this.props.type
+        || prevState.questions.map(q => q.question).join('') !== this.state.questions.map(q => q.question).join('')
   }
 
-  componentDidMount() {
-    let options = Options[this.props.type] || []
-    this.setState({
-      index: 0,
-      allQuestions: options,
-      questions: options.slice(0, this.props.answers.length + 1)
-    })
-  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = {
+      type: nextProps.type,
+      answers: nextProps.answers
+    }
 
-  componentDidUpdate(prevProps, prevState) {
-    const answersChanged = prevProps.answers.join('') !== this.props.answers.join('')
-    const typeChanged = prevProps.type !== this.props.type
+    const answersChanged = nextProps.answers.join('') !== prevState.answers.join('')
+    const typeChanged = nextProps.type !== prevState.type
+    
     if(typeChanged || answersChanged){
-      let newState = {}
-      
       if(typeChanged){
         newState['index'] = -1
-        newState['allQuestions'] = Options[this.props.type] || []
+        newState['allQuestions'] = Options[nextProps.type] || []
       }
       
-      if(answersChanged){
-        newState['questions'] = (newState['allQuestions'] || this.state.allQuestions).slice(0, this.props.answers.length + 1)
-      }
-
-      this.setState(newState)
+      newState['questions'] = (Options[nextProps.type]).slice(0, nextProps.answers.length + 1)
     }
+
+    return newState
   }
 
   getTitle() {
@@ -85,13 +80,17 @@ class Questions extends React.Component {
     return (<Question { ...item } answer={this.props.answers[index]} index={index} onAnswer={this.setAnswer} />)
   }
 
+  getQuestions() {
+    return Options[this.props.type]
+  }
+
   setQuestionsLayout(event) {
     this.setState({ layout: event.nativeEvent.layout })
   }
 
   setAnswer(index, answer) {
     this.props.setAnswer(index, answer).then(() => {
-      if(index === Options['ASK'].length - 1){
+      if(index === Options[this.props.type].length - 1){
         this.props.onNext()
       }else{
         requestAnimationFrame(() => {
@@ -152,7 +151,7 @@ class Questions extends React.Component {
               renderItem={this.getQuestion}
               firstItem={0}
               sliderHeight={this.state.layout.height}
-              itemHeight={this.state.layout.height / 2}
+              itemHeight={this.state.layout.height}
               sliderWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
               itemWidth={Layout.width - PixelRatio.getPixelSizeForLayoutSize(40)}
               keyExtractor={this.keyExtractor}

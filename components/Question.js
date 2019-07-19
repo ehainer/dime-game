@@ -45,12 +45,13 @@ class Question extends React.Component {
 
   render() {
     return (
-      <View style={styles.wrapper}>
+      <View style={{ ...styles.wrapper, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View style={styles.box}>
           <View style={{ ...styles.categoryWrapper }}>
             <Text style={{ ...styles.category }} onLayout={this.setLayout}>{this.props.category}</Text>
             {this.state.layout && <View style={{ width: this.state.layout.width + 20, height: 4, backgroundColor: 'lightseagreen', borderRadius: 2 }}></View>}
           </View>
+          <View style={{ ...styles.spacer }}></View>
           <View style={{ ...styles.content }}>
             <Text style={styles.question}>{this.props.question}</Text>
           </View>
@@ -71,7 +72,7 @@ class Question extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    minWidth: Math.min(Layout.defaultWidth, Layout.maxWidth),
+    minWidth: Math.min(Layout.width, Layout.maxWidth),
     maxWidth: Layout.maxWidth,
     paddingHorizontal: 10
   },
@@ -79,15 +80,13 @@ const styles = StyleSheet.create({
     flex: -1
   },
   categoryWrapper: {
-    alignItems: 'center',
-    marginBottom: 40
+    alignItems: 'center'
   },
   category: {
     fontSize: 30,
     lineHeight: 35,
     color: 'white',
     textAlign: 'center',
-    padding: 10,
     fontFamily: 'palanquin'
   },
   content: {
