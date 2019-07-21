@@ -10,8 +10,6 @@ import {
 
 import Button from './Button'
 
-import Actions from '../redux/actions'
-
 import GlobalStyles from '../resources/styles'
 import Layout from '../resources/layout'
 
@@ -27,8 +25,10 @@ class Question extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.answers[this.props.index] !== this.props.answers[this.props.index]
-    || nextState.layout !== this.state.layout
+    return nextState.layout !== this.state.layout
+    || nextProps.type !== this.props.type
+    || nextProps.step !== this.props.step
+    || nextProps.currentIndex === -1
   }
 
   onAnswerYes() {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 30,
-    lineHeight: 35,
+    lineHeight: 40,
     color: 'white',
     textAlign: 'center',
     fontFamily: 'palanquin'
@@ -119,7 +119,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => ({
-  answers: state.Game.answers
+  answers: state.Game.answers,
+  currentIndex: state.Game.index,
+  type: state.Game.type,
+  step: state.Game.step
 })
 
 const mapDispatchToProps = {

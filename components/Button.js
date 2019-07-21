@@ -7,7 +7,6 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
-  Dimensions,
   Animated,
   Easing
 } from 'react-native'
@@ -23,10 +22,10 @@ class Button extends React.Component {
     this.moveButton = new Animated.ValueXY({ x: 0, y: 0 })
   }
 
-  componentWillUpdate(nextProps) {
+  componentDidUpdate() {
     if(this.props.checkable){
       Animated.timing(this.moveButton, {
-        toValue: { x: 0, y: nextProps.checked ? -50 : 0 },
+        toValue: { x: 0, y: this.props.checked ? -50 : 0 },
         duration: 250,
         easing: Easing.bezier(0.455, 0.030, 0.515, 0.955),
         useNativeDriver: true

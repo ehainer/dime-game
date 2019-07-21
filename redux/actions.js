@@ -1,3 +1,5 @@
+import Options from '../resources/questions.json'
+
 export default {
   setLayout: (event) => {
     return (dispatch) => {
@@ -54,19 +56,24 @@ export default {
     }
   },
   setGameTitle: (title) => ({ type: 'SET_GAME_TITLE', payload: title }),
+  setGameIndex: (index) => ({ type: 'SET_GAME_INDEX', payload: index }),
   setGameType: (type) => {
     return (dispatch, getState) => {
       if(getState().Game.type !== type){
         dispatch({ type: 'SET_ANSWERS', payload: [] })
       }
       dispatch({ type: 'SET_GAME_TYPE', payload: type })
+      dispatch({ type: 'SET_GAME_INDEX', payload: -1 })
+      dispatch({ type: 'SET_ALL_QUESTIONS', payload: Options[getState().Game.type] })
+      dispatch({ type: 'SET_QUESTIONS', payload: Options[getState().Game.type].slice(0, getState().Game.answers + 1) })
       return Promise.resolve()
     }
   },
   setGameStep: (step) => ({ type: 'SET_GAME_STEP', payload: step }),
   setAnswer: (index, value) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
       dispatch({ type: 'SET_ANSWER', payload: { index: index, value: value } })
+      dispatch({ type: 'SET_QUESTIONS', payload: Options[getState().Game.type].slice(0, getState().Game.answers.length + 1) })
       return Promise.resolve()
     }
   },

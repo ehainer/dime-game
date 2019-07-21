@@ -8,9 +8,9 @@
       "ios",
       "android"
     ],
-    "version": "0.1.5",
+    "version": "0.1.6",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-ios.png",
     "splash": {
       "backgroundColor": "#234051"
     },
@@ -30,7 +30,7 @@
     "android": {
       "package": "com.minow.dbt.dime",
       "permissions": [],
-      "versionCode": 7,
+      "versionCode": 8,
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.minow.dbt.dime",
       "adaptiveIcon": {
         "backgroundColor": "#234051",
