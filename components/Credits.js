@@ -187,7 +187,7 @@ class Credits extends React.Component {
               <View style={styles.section}>
                 <View>
                   <Text style={styles.sectionTitle}>Privacy Policy</Text>
-                  <Text style={{ ...styles.library, marginBottom: 10 }} onPress={() => this.onClickLink('https://www.minow.io/dbt/dime-game/privacy-policy.html')}>View Privacy Policy</Text>
+                  <Text style={{ ...styles.library, marginBottom: 10 }} onPress={() => this.onClickLink('https://ehainer.github.io/dbt/dime/privacy-policy.html')}>View Privacy Policy</Text>
                 </View>
               </View>
 
