@@ -28,6 +28,7 @@ class Question extends React.Component {
     return nextState.layout !== this.state.layout
     || nextProps.type !== this.props.type
     || nextProps.step !== this.props.step
+    || nextProps.answer !== this.props.answer
     || nextProps.currentIndex === -1
   }
 
